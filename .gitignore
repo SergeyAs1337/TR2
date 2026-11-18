@@ -1,0 +1,11 @@
+# Roblox Studio / Rojo
+*.rbxl
+*.rbxlx
+*.rbxm
+*.rbxmx
+
+# Local backups and temporary files
+*.bak
+*.tmp
+.DS_Store
+Thumbs.db
