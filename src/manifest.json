@@ -5,648 +5,582 @@
     "ModuleScript": 5,
     "Script": 128
   },
-  "total": 157,
+  "total": 153,
   "scripts": [
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/Workspace/swordbuy/Script.lua",
+      "path": "src/Workspace/swordbuy/Script.server.lua",
       "roblox_path": "Workspace.swordbuy.Script"
     },
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/Workspace/Doroga_Fur/stolbiki/Svetofor/Script.lua",
+      "path": "src/Workspace/Doroga_Fur/stolbiki/Svetofor/Script.server.lua",
       "roblox_path": "Workspace.Doroga_Fur.stolbiki.Svetofor.Script"
     },
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/Workspace/Doroga_Fur/stolbiki/Svetofor1/Script.lua",
+      "path": "src/Workspace/Doroga_Fur/stolbiki/Svetofor1/Script.server.lua",
       "roblox_path": "Workspace.Doroga_Fur.stolbiki.Svetofor1.Script"
     },
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/Workspace/Fonar/lam/Script.lua",
+      "path": "src/Workspace/Fonar/lam/Script.server.lua",
       "roblox_path": "Workspace.Fonar.lam.Script"
     },
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/Workspace/Avtomat_Bloxycola/zdacha/Script.lua",
+      "path": "src/Workspace/Avtomat_Bloxycola/zdacha/Script.server.lua",
       "roblox_path": "Workspace.Avtomat_Bloxycola.zdacha.Script"
     },
     {
       "class": "Script",
       "name": "Sound Script",
-      "path": "src/Workspace/super hata/Model/E to Open Door/Door/Base/Sound Script.lua",
+      "path": "src/Workspace/super hata/Model/E to Open Door/Door/Base/Sound Script.server.lua",
       "roblox_path": "Workspace.super hata.Model.E to Open Door.Door.Base.Sound Script"
     },
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/Workspace/super hata/Model/E to Open Door/Door/Script.lua",
+      "path": "src/Workspace/super hata/Model/E to Open Door/Door/Script.server.lua",
       "roblox_path": "Workspace.super hata.Model.E to Open Door.Door.Script"
     },
     {
       "class": "Script",
       "name": "Sound Script",
-      "path": "src/Workspace/super hata/Model/E to Open Door/Door/Base/Sound Script_2.lua",
+      "path": "src/Workspace/super hata/Model/E to Open Door/Door/Base/Sound Script_2.server.lua",
       "roblox_path": "Workspace.super hata.Model.E to Open Door.Door.Base.Sound Script"
     },
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/Workspace/super hata/Model/E to Open Door/Door/Script_2.lua",
+      "path": "src/Workspace/super hata/Model/E to Open Door/Door/Script_2.server.lua",
       "roblox_path": "Workspace.super hata.Model.E to Open Door.Door.Script"
     },
     {
       "class": "Script",
       "name": "Sound Script",
-      "path": "src/Workspace/super hata/Model/E to Open Door/Door/Base/Sound Script_3.lua",
+      "path": "src/Workspace/super hata/Model/E to Open Door/Door/Base/Sound Script_3.server.lua",
       "roblox_path": "Workspace.super hata.Model.E to Open Door.Door.Base.Sound Script"
     },
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/Workspace/super hata/Model/E to Open Door/Door/Script_3.lua",
+      "path": "src/Workspace/super hata/Model/E to Open Door/Door/Script_3.server.lua",
       "roblox_path": "Workspace.super hata.Model.E to Open Door.Door.Script"
     },
     {
       "class": "Script",
       "name": "Sound Script",
-      "path": "src/Workspace/super hata/Model/E to Open Door/Door/Base/Sound Script_4.lua",
+      "path": "src/Workspace/super hata/Model/E to Open Door/Door/Base/Sound Script_4.server.lua",
       "roblox_path": "Workspace.super hata.Model.E to Open Door.Door.Base.Sound Script"
     },
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/Workspace/super hata/Model/E to Open Door/Door/Script_4.lua",
+      "path": "src/Workspace/super hata/Model/E to Open Door/Door/Script_4.server.lua",
       "roblox_path": "Workspace.super hata.Model.E to Open Door.Door.Script"
     },
     {
       "class": "Script",
       "name": "Sound Script",
-      "path": "src/Workspace/super hata/Model/E to Open Door/Door/Base/Sound Script_5.lua",
+      "path": "src/Workspace/super hata/Model/E to Open Door/Door/Base/Sound Script_5.server.lua",
       "roblox_path": "Workspace.super hata.Model.E to Open Door.Door.Base.Sound Script"
     },
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/Workspace/super hata/Model/E to Open Door/Door/Script_5.lua",
+      "path": "src/Workspace/super hata/Model/E to Open Door/Door/Script_5.server.lua",
       "roblox_path": "Workspace.super hata.Model.E to Open Door.Door.Script"
     },
     {
       "class": "Script",
       "name": "Sound Script",
-      "path": "src/Workspace/super hata/Model/E to Open Door/Door/Base/Sound Script_6.lua",
+      "path": "src/Workspace/super hata/Model/E to Open Door/Door/Base/Sound Script_6.server.lua",
       "roblox_path": "Workspace.super hata.Model.E to Open Door.Door.Base.Sound Script"
     },
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/Workspace/super hata/Model/E to Open Door/Door/Script_6.lua",
+      "path": "src/Workspace/super hata/Model/E to Open Door/Door/Script_6.server.lua",
       "roblox_path": "Workspace.super hata.Model.E to Open Door.Door.Script"
     },
     {
       "class": "Script",
       "name": "Sound Script",
-      "path": "src/Workspace/super hata/Model/E to Open Door/Door/Base/Sound Script_7.lua",
+      "path": "src/Workspace/super hata/Model/E to Open Door/Door/Base/Sound Script_7.server.lua",
       "roblox_path": "Workspace.super hata.Model.E to Open Door.Door.Base.Sound Script"
     },
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/Workspace/super hata/Model/E to Open Door/Door/Script_7.lua",
+      "path": "src/Workspace/super hata/Model/E to Open Door/Door/Script_7.server.lua",
       "roblox_path": "Workspace.super hata.Model.E to Open Door.Door.Script"
     },
     {
       "class": "Script",
       "name": "Sound Script",
-      "path": "src/Workspace/super hata/Model/E to Open Door/Door/Base/Sound Script_8.lua",
+      "path": "src/Workspace/super hata/Model/E to Open Door/Door/Base/Sound Script_8.server.lua",
       "roblox_path": "Workspace.super hata.Model.E to Open Door.Door.Base.Sound Script"
     },
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/Workspace/super hata/Model/E to Open Door/Door/Script_8.lua",
+      "path": "src/Workspace/super hata/Model/E to Open Door/Door/Script_8.server.lua",
       "roblox_path": "Workspace.super hata.Model.E to Open Door.Door.Script"
     },
     {
       "class": "Script",
       "name": "Sound Script",
-      "path": "src/Workspace/super hata/Model/E to Open Door/Door/Base/Sound Script_9.lua",
+      "path": "src/Workspace/super hata/Model/E to Open Door/Door/Base/Sound Script_9.server.lua",
       "roblox_path": "Workspace.super hata.Model.E to Open Door.Door.Base.Sound Script"
     },
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/Workspace/super hata/Model/E to Open Door/Door/Script_9.lua",
+      "path": "src/Workspace/super hata/Model/E to Open Door/Door/Script_9.server.lua",
       "roblox_path": "Workspace.super hata.Model.E to Open Door.Door.Script"
     },
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/Workspace/Cafe/Largeshelf/Skail_67/Script.lua",
+      "path": "src/Workspace/Cafe/Largeshelf/Skail_67/Script.server.lua",
       "roblox_path": "Workspace.Cafe.Largeshelf.Skail_67.Script"
     },
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/Workspace/Shop/Sgushenka_met/buy/Script.lua",
+      "path": "src/Workspace/Shop/Sgushenka_met/buy/Script.server.lua",
       "roblox_path": "Workspace.Shop.Sgushenka_met.buy.Script"
     },
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/Workspace/Shop/Doors_Shop/1/Script.lua",
+      "path": "src/Workspace/Shop/Doors_Shop/1/Script.server.lua",
       "roblox_path": "Workspace.Shop.Doors_Shop.1.Script"
     },
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/Workspace/Shop/Doors_Shop/2/Script.lua",
+      "path": "src/Workspace/Shop/Doors_Shop/2/Script.server.lua",
       "roblox_path": "Workspace.Shop.Doors_Shop.2.Script"
     },
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/Workspace/Shop/Stick/Script.lua",
+      "path": "src/Workspace/Shop/Stick/Script.server.lua",
       "roblox_path": "Workspace.Shop.Stick.Script"
     },
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/Workspace/Shop/sgushenka_buy/Script.lua",
+      "path": "src/Workspace/Shop/sgushenka_buy/Script.server.lua",
       "roblox_path": "Workspace.Shop.sgushenka_buy.Script"
     },
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/Workspace/Shop/RadioBuy/Script.lua",
+      "path": "src/Workspace/Shop/RadioBuy/Script.server.lua",
       "roblox_path": "Workspace.Shop.RadioBuy.Script"
     },
     {
       "class": "Script",
       "name": "CleanScript",
-      "path": "src/Workspace/Shop/Mysorka/ClearZone/CleanScript.lua",
+      "path": "src/Workspace/Shop/Mysorka/ClearZone/CleanScript.server.lua",
       "roblox_path": "Workspace.Shop.Mysorka.ClearZone.CleanScript"
     },
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/Workspace/Shop/Milkakyp/Part/Script.lua",
+      "path": "src/Workspace/Shop/Milkakyp/Part/Script.server.lua",
       "roblox_path": "Workspace.Shop.Milkakyp.Part.Script"
     },
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/Workspace/Shop/odnoryk/Script.lua",
+      "path": "src/Workspace/Shop/odnoryk/Script.server.lua",
       "roblox_path": "Workspace.Shop.odnoryk.Script"
     },
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/Workspace/Shop/gravitybuy/Script.lua",
+      "path": "src/Workspace/Shop/gravitybuy/Script.server.lua",
       "roblox_path": "Workspace.Shop.gravitybuy.Script"
     },
     {
       "class": "Script",
       "name": "CleanScript",
-      "path": "src/Workspace/Park/Mysorka/ClearZone/CleanScript.lua",
+      "path": "src/Workspace/Park/Mysorka/ClearZone/CleanScript.server.lua",
       "roblox_path": "Workspace.Park.Mysorka.ClearZone.CleanScript"
     },
     {
       "class": "Script",
       "name": "CleanScript",
-      "path": "src/Workspace/Park/Mysorka/ClearZone/CleanScript_2.lua",
+      "path": "src/Workspace/Park/Mysorka/ClearZone/CleanScript_2.server.lua",
       "roblox_path": "Workspace.Park.Mysorka.ClearZone.CleanScript"
     },
     {
       "class": "Script",
       "name": "CleanScript",
-      "path": "src/Workspace/Park/Mysorka/ClearZone/CleanScript_3.lua",
+      "path": "src/Workspace/Park/Mysorka/ClearZone/CleanScript_3.server.lua",
       "roblox_path": "Workspace.Park.Mysorka.ClearZone.CleanScript"
     },
     {
       "class": "Script",
       "name": "CleanScript",
-      "path": "src/Workspace/Park/Mysorka/ClearZone/CleanScript_4.lua",
+      "path": "src/Workspace/Park/Mysorka/ClearZone/CleanScript_4.server.lua",
       "roblox_path": "Workspace.Park.Mysorka.ClearZone.CleanScript"
     },
     {
       "class": "Script",
       "name": "CleanScript",
-      "path": "src/Workspace/Park/Mysorka/ClearZone/CleanScript_5.lua",
+      "path": "src/Workspace/Park/Mysorka/ClearZone/CleanScript_5.server.lua",
       "roblox_path": "Workspace.Park.Mysorka.ClearZone.CleanScript"
     },
     {
       "class": "Script",
       "name": "CleanScript",
-      "path": "src/Workspace/Park/Mysorka/ClearZone/CleanScript_6.lua",
+      "path": "src/Workspace/Park/Mysorka/ClearZone/CleanScript_6.server.lua",
       "roblox_path": "Workspace.Park.Mysorka.ClearZone.CleanScript"
     },
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/Workspace/Park/Kachalka_lol/Doors_Shop/1/Script.lua",
+      "path": "src/Workspace/Park/Kachalka_lol/Doors_Shop/1/Script.server.lua",
       "roblox_path": "Workspace.Park.Kachalka_lol.Doors_Shop.1.Script"
     },
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/Workspace/Park/Kachalka_lol/Doors_Shop/2/Script.lua",
+      "path": "src/Workspace/Park/Kachalka_lol/Doors_Shop/2/Script.server.lua",
       "roblox_path": "Workspace.Park.Kachalka_lol.Doors_Shop.2.Script"
     },
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/Workspace/Park/Gorka/Part/Script.lua",
+      "path": "src/Workspace/Park/Gorka/Part/Script.server.lua",
       "roblox_path": "Workspace.Park.Gorka.Part.Script"
     },
     {
       "class": "Script",
       "name": "CleanScript",
-      "path": "src/Workspace/Park/Mysorka/ClearZone/CleanScript_7.lua",
+      "path": "src/Workspace/Park/Mysorka/ClearZone/CleanScript_7.server.lua",
       "roblox_path": "Workspace.Park.Mysorka.ClearZone.CleanScript"
     },
     {
       "class": "Script",
       "name": "CleanScript",
-      "path": "src/Workspace/Park/Mysorka/ClearZone/CleanScript_8.lua",
+      "path": "src/Workspace/Park/Mysorka/ClearZone/CleanScript_8.server.lua",
       "roblox_path": "Workspace.Park.Mysorka.ClearZone.CleanScript"
     },
     {
       "class": "Script",
       "name": "CleanScript",
-      "path": "src/Workspace/Park/Mysorka/ClearZone/CleanScript_9.lua",
+      "path": "src/Workspace/Park/Mysorka/ClearZone/CleanScript_9.server.lua",
       "roblox_path": "Workspace.Park.Mysorka.ClearZone.CleanScript"
     },
     {
       "class": "Script",
       "name": "CleanScript",
-      "path": "src/Workspace/Park/Mysorka/ClearZone/CleanScript_10.lua",
+      "path": "src/Workspace/Park/Mysorka/ClearZone/CleanScript_10.server.lua",
       "roblox_path": "Workspace.Park.Mysorka.ClearZone.CleanScript"
     },
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/Workspace/Mnogo_etachka/High-rise buildings/E to Open Door/Door/Script.lua",
+      "path": "src/Workspace/Mnogo_etachka/High-rise buildings/E to Open Door/Door/Script.server.lua",
       "roblox_path": "Workspace.Mnogo_etachka.High-rise buildings.E to Open Door.Door.Script"
     },
     {
       "class": "Script",
       "name": "Sound Script",
-      "path": "src/Workspace/Mnogo_etachka/High-rise buildings/E to Open Door/Door/Base/Sound Script.lua",
+      "path": "src/Workspace/Mnogo_etachka/High-rise buildings/E to Open Door/Door/Base/Sound Script.server.lua",
       "roblox_path": "Workspace.Mnogo_etachka.High-rise buildings.E to Open Door.Door.Base.Sound Script"
     },
     {
       "class": "Script",
       "name": "DoorScript",
-      "path": "src/Workspace/Mnogo_etachka/High-rise buildings/Metal Door/DoorObjetcs/DoorScript.lua",
+      "path": "src/Workspace/Mnogo_etachka/High-rise buildings/Metal Door/DoorObjetcs/DoorScript.server.lua",
       "roblox_path": "Workspace.Mnogo_etachka.High-rise buildings.Metal Door.DoorObjetcs.DoorScript"
     },
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Script.lua",
+      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Script.server.lua",
       "roblox_path": "Workspace.Mnogo_etachka.High-rise build.E to Open Door.Door.Script"
     },
     {
       "class": "Script",
       "name": "Sound Script",
-      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Base/Sound Script.lua",
+      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Base/Sound Script.server.lua",
       "roblox_path": "Workspace.Mnogo_etachka.High-rise build.E to Open Door.Door.Base.Sound Script"
     },
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Script_2.lua",
+      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Script_2.server.lua",
       "roblox_path": "Workspace.Mnogo_etachka.High-rise build.E to Open Door.Door.Script"
     },
     {
       "class": "Script",
       "name": "Sound Script",
-      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Base/Sound Script_2.lua",
+      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Base/Sound Script_2.server.lua",
       "roblox_path": "Workspace.Mnogo_etachka.High-rise build.E to Open Door.Door.Base.Sound Script"
     },
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Script_3.lua",
+      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Script_3.server.lua",
       "roblox_path": "Workspace.Mnogo_etachka.High-rise build.E to Open Door.Door.Script"
     },
     {
       "class": "Script",
       "name": "Sound Script",
-      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Base/Sound Script_3.lua",
+      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Base/Sound Script_3.server.lua",
       "roblox_path": "Workspace.Mnogo_etachka.High-rise build.E to Open Door.Door.Base.Sound Script"
     },
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Script_4.lua",
+      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Script_4.server.lua",
       "roblox_path": "Workspace.Mnogo_etachka.High-rise build.E to Open Door.Door.Script"
     },
     {
       "class": "Script",
       "name": "Sound Script",
-      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Base/Sound Script_4.lua",
+      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Base/Sound Script_4.server.lua",
       "roblox_path": "Workspace.Mnogo_etachka.High-rise build.E to Open Door.Door.Base.Sound Script"
     },
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/Workspace/Mnogo_etachka/High-rise buildings/E to Open Door/Door/Script_2.lua",
+      "path": "src/Workspace/Mnogo_etachka/High-rise buildings/E to Open Door/Door/Script_2.server.lua",
       "roblox_path": "Workspace.Mnogo_etachka.High-rise buildings.E to Open Door.Door.Script"
     },
     {
       "class": "Script",
       "name": "Sound Script",
-      "path": "src/Workspace/Mnogo_etachka/High-rise buildings/E to Open Door/Door/Base/Sound Script_2.lua",
+      "path": "src/Workspace/Mnogo_etachka/High-rise buildings/E to Open Door/Door/Base/Sound Script_2.server.lua",
       "roblox_path": "Workspace.Mnogo_etachka.High-rise buildings.E to Open Door.Door.Base.Sound Script"
     },
     {
       "class": "Script",
       "name": "DoorScript",
-      "path": "src/Workspace/Mnogo_etachka/High-rise buildings/Metal Door/DoorObjetcs/DoorScript_2.lua",
+      "path": "src/Workspace/Mnogo_etachka/High-rise buildings/Metal Door/DoorObjetcs/DoorScript_2.server.lua",
       "roblox_path": "Workspace.Mnogo_etachka.High-rise buildings.Metal Door.DoorObjetcs.DoorScript"
     },
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Script_5.lua",
+      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Script_5.server.lua",
       "roblox_path": "Workspace.Mnogo_etachka.High-rise build.E to Open Door.Door.Script"
     },
     {
       "class": "Script",
       "name": "Sound Script",
-      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Base/Sound Script_5.lua",
+      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Base/Sound Script_5.server.lua",
       "roblox_path": "Workspace.Mnogo_etachka.High-rise build.E to Open Door.Door.Base.Sound Script"
     },
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Script_6.lua",
+      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Script_6.server.lua",
       "roblox_path": "Workspace.Mnogo_etachka.High-rise build.E to Open Door.Door.Script"
     },
     {
       "class": "Script",
       "name": "Sound Script",
-      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Base/Sound Script_6.lua",
+      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Base/Sound Script_6.server.lua",
       "roblox_path": "Workspace.Mnogo_etachka.High-rise build.E to Open Door.Door.Base.Sound Script"
     },
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Script_7.lua",
+      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Script_7.server.lua",
       "roblox_path": "Workspace.Mnogo_etachka.High-rise build.E to Open Door.Door.Script"
     },
     {
       "class": "Script",
       "name": "Sound Script",
-      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Base/Sound Script_7.lua",
+      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Base/Sound Script_7.server.lua",
       "roblox_path": "Workspace.Mnogo_etachka.High-rise build.E to Open Door.Door.Base.Sound Script"
     },
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Script_8.lua",
+      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Script_8.server.lua",
       "roblox_path": "Workspace.Mnogo_etachka.High-rise build.E to Open Door.Door.Script"
     },
     {
       "class": "Script",
       "name": "Sound Script",
-      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Base/Sound Script_8.lua",
+      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Base/Sound Script_8.server.lua",
       "roblox_path": "Workspace.Mnogo_etachka.High-rise build.E to Open Door.Door.Base.Sound Script"
     },
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/Workspace/Mnogo_etachka/High-rise buildings/E to Open Door/Door/Script_3.lua",
+      "path": "src/Workspace/Mnogo_etachka/High-rise buildings/E to Open Door/Door/Script_3.server.lua",
       "roblox_path": "Workspace.Mnogo_etachka.High-rise buildings.E to Open Door.Door.Script"
     },
     {
       "class": "Script",
       "name": "Sound Script",
-      "path": "src/Workspace/Mnogo_etachka/High-rise buildings/E to Open Door/Door/Base/Sound Script_3.lua",
+      "path": "src/Workspace/Mnogo_etachka/High-rise buildings/E to Open Door/Door/Base/Sound Script_3.server.lua",
       "roblox_path": "Workspace.Mnogo_etachka.High-rise buildings.E to Open Door.Door.Base.Sound Script"
     },
     {
       "class": "Script",
       "name": "DoorScript",
-      "path": "src/Workspace/Mnogo_etachka/High-rise buildings/Metal Door/DoorObjetcs/DoorScript_3.lua",
+      "path": "src/Workspace/Mnogo_etachka/High-rise buildings/Metal Door/DoorObjetcs/DoorScript_3.server.lua",
       "roblox_path": "Workspace.Mnogo_etachka.High-rise buildings.Metal Door.DoorObjetcs.DoorScript"
     },
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Script_9.lua",
+      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Script_9.server.lua",
       "roblox_path": "Workspace.Mnogo_etachka.High-rise build.E to Open Door.Door.Script"
     },
     {
       "class": "Script",
       "name": "Sound Script",
-      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Base/Sound Script_9.lua",
+      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Base/Sound Script_9.server.lua",
       "roblox_path": "Workspace.Mnogo_etachka.High-rise build.E to Open Door.Door.Base.Sound Script"
     },
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Script_10.lua",
+      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Script_10.server.lua",
       "roblox_path": "Workspace.Mnogo_etachka.High-rise build.E to Open Door.Door.Script"
     },
     {
       "class": "Script",
       "name": "Sound Script",
-      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Base/Sound Script_10.lua",
+      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Base/Sound Script_10.server.lua",
       "roblox_path": "Workspace.Mnogo_etachka.High-rise build.E to Open Door.Door.Base.Sound Script"
     },
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Script_11.lua",
+      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Script_11.server.lua",
       "roblox_path": "Workspace.Mnogo_etachka.High-rise build.E to Open Door.Door.Script"
     },
     {
       "class": "Script",
       "name": "Sound Script",
-      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Base/Sound Script_11.lua",
+      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Base/Sound Script_11.server.lua",
       "roblox_path": "Workspace.Mnogo_etachka.High-rise build.E to Open Door.Door.Base.Sound Script"
     },
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Script_12.lua",
+      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Script_12.server.lua",
       "roblox_path": "Workspace.Mnogo_etachka.High-rise build.E to Open Door.Door.Script"
     },
     {
       "class": "Script",
       "name": "Sound Script",
-      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Base/Sound Script_12.lua",
+      "path": "src/Workspace/Mnogo_etachka/High-rise build/E to Open Door/Door/Base/Sound Script_12.server.lua",
       "roblox_path": "Workspace.Mnogo_etachka.High-rise build.E to Open Door.Door.Base.Sound Script"
-    },
-    {
-      "class": "LocalScript",
-      "name": "ewq",
-      "path": "src/StarterPlayer/StarterPlayerScripts/ewq.lua",
-      "roblox_path": "StarterPlayer.StarterPlayerScripts.ewq"
     },
     {
       "class": "LocalScript",
       "name": "black",
-      "path": "src/StarterPlayer/StarterPlayerScripts/black.lua",
+      "path": "src/StarterPlayer/StarterPlayerScripts/black.client.lua",
       "roblox_path": "StarterPlayer.StarterPlayerScripts.black"
     },
     {
       "class": "Script",
       "name": "falldam",
-      "path": "src/StarterPlayer/StarterCharacterScripts/falldam.lua",
+      "path": "src/StarterPlayer/StarterCharacterScripts/falldam.server.lua",
       "roblox_path": "StarterPlayer.StarterCharacterScripts.falldam"
     },
     {
       "class": "LocalScript",
       "name": "TrunOnWithClick",
-      "path": "src/StarterPack/FlashLight/TrunOnWithClick.lua",
+      "path": "src/StarterPack/FlashLight/TrunOnWithClick.client.lua",
       "roblox_path": "StarterPack.FlashLight.TrunOnWithClick"
     },
     {
       "class": "LocalScript",
       "name": "TrunOnWithPressF",
-      "path": "src/StarterPack/FlashLight/TrunOnWithPressF.lua",
+      "path": "src/StarterPack/FlashLight/TrunOnWithPressF.client.lua",
       "roblox_path": "StarterPack.FlashLight.TrunOnWithPressF"
     },
     {
       "class": "LocalScript",
       "name": "LocalScript",
-      "path": "src/StarterGui/MainMenu/LocalScript.lua",
+      "path": "src/StarterGui/MainMenu/LocalScript.client.lua",
       "roblox_path": "StarterGui.MainMenu.LocalScript"
     },
     {
       "class": "LocalScript",
       "name": "LocalScript",
-      "path": "src/StarterGui/EventUI/EventLabel/LocalScript.lua",
-      "roblox_path": "StarterGui.EventUI.EventLabel.LocalScript"
-    },
-    {
-      "class": "LocalScript",
-      "name": "LocalScript",
-      "path": "src/StarterGui/CoinsDeaths/LocalScript.lua",
-      "roblox_path": "StarterGui.CoinsDeaths.LocalScript"
-    },
-    {
-      "class": "LocalScript",
-      "name": "LocalScript",
-      "path": "src/StarterGui/AdminResetGui/LocalScript.lua",
-      "roblox_path": "StarterGui.AdminResetGui.LocalScript"
-    },
-    {
-      "class": "LocalScript",
-      "name": "LocalScript",
-      "path": "src/StarterGui/EmotionGui/LocalScript.lua",
-      "roblox_path": "StarterGui.EmotionGui.LocalScript"
-    },
-    {
-      "class": "LocalScript",
-      "name": "LocalScript",
-      "path": "src/StarterGui/RadioUI/LocalScript.lua",
-      "roblox_path": "StarterGui.RadioUI.LocalScript"
-    },
-    {
-      "class": "LocalScript",
-      "name": "LocalScript",
-      "path": "src/StarterGui/DialogueGui/LocalScript.lua",
-      "roblox_path": "StarterGui.DialogueGui.LocalScript"
-    },
-    {
-      "class": "LocalScript",
-      "name": "LocalScript",
-      "path": "src/StarterGui/DailyQuestGui/LocalScript.lua",
-      "roblox_path": "StarterGui.DailyQuestGui.LocalScript"
-    },
-    {
-      "class": "LocalScript",
-      "name": "LocalScript",
-      "path": "src/StarterGui/CoinPopupGui/LocalScript.lua",
-      "roblox_path": "StarterGui.CoinPopupGui.LocalScript"
-    },
-    {
-      "class": "LocalScript",
-      "name": "LocalScript",
-      "path": "src/StarterGui/GambleUI/MainFrame/PlayButton/LocalScript.lua",
-      "roblox_path": "StarterGui.GambleUI.MainFrame.PlayButton.LocalScript"
-    },
-    {
-      "class": "LocalScript",
-      "name": "LocalScript",
-      "path": "src/StarterGui/UpgradeGUI/LocalScript.lua",
-      "roblox_path": "StarterGui.UpgradeGUI.LocalScript"
-    },
-    {
-      "class": "LocalScript",
-      "name": "LocalScript",
-      "path": "src/StarterGui/ScreenGui/LocalScript.lua",
+      "path": "src/StarterGui/ScreenGui/LocalScript.client.lua",
       "roblox_path": "StarterGui.ScreenGui.LocalScript"
     },
     {
       "class": "Script",
       "name": "beta",
-      "path": "src/ReplicatedStorage/Furocka/beta.lua",
+      "path": "src/ReplicatedStorage/Furocka/beta.server.lua",
       "roblox_path": "ReplicatedStorage.Furocka.beta"
     },
     {
       "class": "Script",
       "name": "killer1",
-      "path": "src/ReplicatedStorage/Furocka/Убивца/killer1.lua",
+      "path": "src/ReplicatedStorage/Furocka/Убивца/killer1.server.lua",
       "roblox_path": "ReplicatedStorage.Furocka.Убивца.killer1"
     },
     {
       "class": "Script",
       "name": "AvariaDelete",
-      "path": "src/ReplicatedStorage/Furocka/AvariaDelete.lua",
+      "path": "src/ReplicatedStorage/Furocka/AvariaDelete.server.lua",
       "roblox_path": "ReplicatedStorage.Furocka.AvariaDelete"
     },
     {
       "class": "Script",
       "name": "beta",
-      "path": "src/ReplicatedStorage/Furocka2/beta.lua",
+      "path": "src/ReplicatedStorage/Furocka2/beta.server.lua",
       "roblox_path": "ReplicatedStorage.Furocka2.beta"
     },
     {
       "class": "Script",
       "name": "killer2",
-      "path": "src/ReplicatedStorage/Furocka2/Убивца/killer2.lua",
+      "path": "src/ReplicatedStorage/Furocka2/Убивца/killer2.server.lua",
       "roblox_path": "ReplicatedStorage.Furocka2.Убивца.killer2"
     },
     {
       "class": "Script",
       "name": "AvariaDelete",
-      "path": "src/ReplicatedStorage/Furocka2/AvariaDelete.lua",
+      "path": "src/ReplicatedStorage/Furocka2/AvariaDelete.server.lua",
       "roblox_path": "ReplicatedStorage.Furocka2.AvariaDelete"
     },
     {
       "class": "Script",
       "name": "BloxyColaScript",
-      "path": "src/ReplicatedStorage/Bloxy_cola/BloxyColaScript.lua",
+      "path": "src/ReplicatedStorage/Bloxy_cola/BloxyColaScript.server.lua",
       "roblox_path": "ReplicatedStorage.Bloxy_cola.BloxyColaScript"
     },
     {
       "class": "Script",
       "name": "Take",
-      "path": "src/ReplicatedStorage/Bloxy_cola/Take.lua",
+      "path": "src/ReplicatedStorage/Bloxy_cola/Take.server.lua",
       "roblox_path": "ReplicatedStorage.Bloxy_cola.Take"
     },
     {
       "class": "Script",
       "name": "PlantBomb",
-      "path": "src/ReplicatedStorage/Sgushenka/PlantBomb.lua",
+      "path": "src/ReplicatedStorage/Sgushenka/PlantBomb.server.lua",
       "roblox_path": "ReplicatedStorage.Sgushenka.PlantBomb"
     },
     {
       "class": "Script",
       "name": "Bomb",
-      "path": "src/ReplicatedStorage/Sgushenka/Bomb.lua",
+      "path": "src/ReplicatedStorage/Sgushenka/Bomb.server.lua",
       "roblox_path": "ReplicatedStorage.Sgushenka.Bomb"
     },
     {
@@ -658,68 +592,62 @@
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/ReplicatedStorage/Stick/Script.lua",
+      "path": "src/ReplicatedStorage/Stick/Script.server.lua",
       "roblox_path": "ReplicatedStorage.Stick.Script"
     },
     {
       "class": "LocalScript",
       "name": "LocalScript",
-      "path": "src/ReplicatedStorage/Stick/LocalScript.lua",
+      "path": "src/ReplicatedStorage/Stick/LocalScript.client.lua",
       "roblox_path": "ReplicatedStorage.Stick.LocalScript"
     },
     {
       "class": "LocalScript",
       "name": "LocalScript",
-      "path": "src/ReplicatedStorage/Sgushenkamet/LocalScript.lua",
+      "path": "src/ReplicatedStorage/Sgushenkamet/LocalScript.client.lua",
       "roblox_path": "ReplicatedStorage.Sgushenkamet.LocalScript"
     },
     {
       "class": "Script",
       "name": "Script",
-      "path": "src/ReplicatedStorage/Sgushenkamet/Script.lua",
+      "path": "src/ReplicatedStorage/Sgushenkamet/Script.server.lua",
       "roblox_path": "ReplicatedStorage.Sgushenkamet.Script"
     },
     {
       "class": "LocalScript",
       "name": "EatClient",
-      "path": "src/ReplicatedStorage/milkynet/EatClient.lua",
+      "path": "src/ReplicatedStorage/milkynet/EatClient.client.lua",
       "roblox_path": "ReplicatedStorage.milkynet.EatClient"
     },
     {
       "class": "Script",
       "name": "EatServer",
-      "path": "src/ReplicatedStorage/milkynet/EatServer.lua",
+      "path": "src/ReplicatedStorage/milkynet/EatServer.server.lua",
       "roblox_path": "ReplicatedStorage.milkynet.EatServer"
     },
     {
       "class": "Script",
       "name": "SwordScript",
-      "path": "src/ReplicatedStorage/LinkedSword/SwordScript.lua",
+      "path": "src/ReplicatedStorage/LinkedSword/SwordScript.server.lua",
       "roblox_path": "ReplicatedStorage.LinkedSword.SwordScript"
     },
     {
       "class": "LocalScript",
       "name": "MouseIcon",
-      "path": "src/ReplicatedStorage/LinkedSword/MouseIcon.lua",
+      "path": "src/ReplicatedStorage/LinkedSword/MouseIcon.client.lua",
       "roblox_path": "ReplicatedStorage.LinkedSword.MouseIcon"
     },
     {
       "class": "Script",
       "name": "GravityCoilScript",
-      "path": "src/ReplicatedStorage/Gravity Coil/GravityCoilScript.lua",
+      "path": "src/ReplicatedStorage/Gravity Coil/GravityCoilScript.server.lua",
       "roblox_path": "ReplicatedStorage.Gravity Coil.GravityCoilScript"
     },
     {
       "class": "LocalScript",
       "name": "LocalScript",
-      "path": "src/ReplicatedStorage/Radio/LocalScript.lua",
+      "path": "src/ReplicatedStorage/Radio/LocalScript.client.lua",
       "roblox_path": "ReplicatedStorage.Radio.LocalScript"
-    },
-    {
-      "class": "Script",
-      "name": "Script",
-      "path": "src/ReplicatedStorage/Radio/RadioModel/Base/Script.lua",
-      "roblox_path": "ReplicatedStorage.Radio.RadioModel.Base.Script"
     },
     {
       "class": "ModuleScript",
@@ -736,187 +664,145 @@
     {
       "class": "LocalScript",
       "name": "LocalScript",
-      "path": "src/ReplicatedStorage/odnorykiy_bandit/LocalScript.lua",
+      "path": "src/ReplicatedStorage/odnorykiy_bandit/LocalScript.client.lua",
       "roblox_path": "ReplicatedStorage.odnorykiy_bandit.LocalScript"
     },
     {
       "class": "LocalScript",
       "name": "Animate",
-      "path": "src/ReplicatedStorage/BlackFigure/Animate.lua",
+      "path": "src/ReplicatedStorage/BlackFigure/Animate.client.lua",
       "roblox_path": "ReplicatedStorage.BlackFigure.Animate"
     },
     {
       "class": "Script",
       "name": "EatServer",
-      "path": "src/ReplicatedStorage/IceCream/EatServer.lua",
+      "path": "src/ReplicatedStorage/IceCream/EatServer.server.lua",
       "roblox_path": "ReplicatedStorage.IceCream.EatServer"
     },
     {
       "class": "LocalScript",
       "name": "EatClient",
-      "path": "src/ReplicatedStorage/IceCream/EatClient.lua",
+      "path": "src/ReplicatedStorage/IceCream/EatClient.client.lua",
       "roblox_path": "ReplicatedStorage.IceCream.EatClient"
     },
     {
       "class": "Script",
       "name": "time_set",
-      "path": "src/ServerScriptService/time_set.lua",
+      "path": "src/ServerScriptService/time_set.server.lua",
       "roblox_path": "ServerScriptService.time_set"
     },
     {
       "class": "Script",
       "name": "TruckSpawner2",
-      "path": "src/ServerScriptService/TruckSpawner2.lua",
+      "path": "src/ServerScriptService/TruckSpawner2.server.lua",
       "roblox_path": "ServerScriptService.TruckSpawner2"
     },
     {
       "class": "Script",
       "name": "TruckSpawner",
-      "path": "src/ServerScriptService/TruckSpawner.lua",
+      "path": "src/ServerScriptService/TruckSpawner.server.lua",
       "roblox_path": "ServerScriptService.TruckSpawner"
     },
     {
       "class": "Script",
       "name": "RandomEventController",
-      "path": "src/ServerScriptService/RandomEventController.lua",
+      "path": "src/ServerScriptService/RandomEventController.server.lua",
       "roblox_path": "ServerScriptService.RandomEventController"
     },
     {
       "class": "Script",
       "name": "RagdollOnDeath",
-      "path": "src/ServerScriptService/RagdollOnDeath.lua",
+      "path": "src/ServerScriptService/RagdollOnDeath.server.lua",
       "roblox_path": "ServerScriptService.RagdollOnDeath"
     },
     {
       "class": "Script",
       "name": "LeaderboardManager",
-      "path": "src/ServerScriptService/LeaderboardManager.lua",
+      "path": "src/ServerScriptService/LeaderboardManager.server.lua",
       "roblox_path": "ServerScriptService.LeaderboardManager"
     },
     {
       "class": "Script",
       "name": "LeaderBoard",
-      "path": "src/ServerScriptService/LeaderBoard.lua",
+      "path": "src/ServerScriptService/LeaderBoard.server.lua",
       "roblox_path": "ServerScriptService.LeaderBoard"
     },
     {
       "class": "Script",
-      "name": "voice upgrade",
-      "path": "src/ServerScriptService/voice upgrade.lua",
-      "roblox_path": "ServerScriptService.voice upgrade"
-    },
-    {
-      "class": "Script",
       "name": "forcefielt delete",
-      "path": "src/ServerScriptService/forcefielt delete.lua",
+      "path": "src/ServerScriptService/forcefielt delete.server.lua",
       "roblox_path": "ServerScriptService.forcefielt delete"
     },
     {
       "class": "Script",
-      "name": "admin",
-      "path": "src/ServerScriptService/admin.lua",
-      "roblox_path": "ServerScriptService.admin"
-    },
-    {
-      "class": "Script",
       "name": "DanceServer",
-      "path": "src/ServerScriptService/DanceServer.lua",
+      "path": "src/ServerScriptService/DanceServer.server.lua",
       "roblox_path": "ServerScriptService.DanceServer"
     },
     {
       "class": "Script",
       "name": "RadioHandler",
-      "path": "src/ServerScriptService/RadioHandler.lua",
+      "path": "src/ServerScriptService/RadioHandler.server.lua",
       "roblox_path": "ServerScriptService.RadioHandler"
     },
     {
       "class": "Script",
       "name": "ItemDrops",
-      "path": "src/ServerScriptService/ItemDrops.lua",
+      "path": "src/ServerScriptService/ItemDrops.server.lua",
       "roblox_path": "ServerScriptService.ItemDrops"
     },
     {
       "class": "Script",
       "name": "NPCSPAWN",
-      "path": "src/ServerScriptService/NPCSPAWN.lua",
+      "path": "src/ServerScriptService/NPCSPAWN.server.lua",
       "roblox_path": "ServerScriptService.NPCSPAWN"
     },
     {
       "class": "Script",
       "name": "dialogsquests",
-      "path": "src/ServerScriptService/dialogsquests.lua",
+      "path": "src/ServerScriptService/dialogsquests.server.lua",
       "roblox_path": "ServerScriptService.dialogsquests"
     },
     {
       "class": "Script",
       "name": "ItemSAVE",
-      "path": "src/ServerScriptService/ItemSAVE.lua",
+      "path": "src/ServerScriptService/ItemSAVE.server.lua",
       "roblox_path": "ServerScriptService.ItemSAVE"
-    },
-    {
-      "class": "ModuleScript",
-      "name": "DailyQuestModule",
-      "path": "src/ServerScriptService/DailyQuestModule.lua",
-      "roblox_path": "ServerScriptService.DailyQuestModule"
     },
     {
       "class": "Script",
       "name": "everydaycount",
-      "path": "src/ServerScriptService/everydaycount.lua",
+      "path": "src/ServerScriptService/everydaycount.server.lua",
       "roblox_path": "ServerScriptService.everydaycount"
     },
     {
       "class": "Script",
-      "name": "sbrocs",
-      "path": "src/ServerScriptService/sbrocs.lua",
-      "roblox_path": "ServerScriptService.sbrocs"
-    },
-    {
-      "class": "Script",
-      "name": "CoinPopUp",
-      "path": "src/ServerScriptService/CoinPopUp.lua",
-      "roblox_path": "ServerScriptService.CoinPopUp"
-    },
-    {
-      "class": "Script",
       "name": "lookedachievent",
-      "path": "src/ServerScriptService/lookedachievent.lua",
+      "path": "src/ServerScriptService/lookedachievent.server.lua",
       "roblox_path": "ServerScriptService.lookedachievent"
     },
     {
       "class": "Script",
       "name": "achivki",
-      "path": "src/ServerScriptService/achivki.lua",
+      "path": "src/ServerScriptService/achivki.server.lua",
       "roblox_path": "ServerScriptService.achivki"
     },
     {
       "class": "Script",
       "name": "gamble",
-      "path": "src/ServerScriptService/gamble.lua",
+      "path": "src/ServerScriptService/gamble.server.lua",
       "roblox_path": "ServerScriptService.gamble"
     },
     {
       "class": "Script",
-      "name": "losssaved",
-      "path": "src/ServerScriptService/losssaved.lua",
-      "roblox_path": "ServerScriptService.losssaved"
-    },
-    {
-      "class": "Script",
       "name": "UpgradeHandler",
-      "path": "src/ServerScriptService/UpgradeHandler.lua",
+      "path": "src/ServerScriptService/UpgradeHandler.server.lua",
       "roblox_path": "ServerScriptService.UpgradeHandler"
     },
     {
       "class": "Script",
-      "name": "hyperscript",
-      "path": "src/ServerScriptService/hyperscript.lua",
-      "roblox_path": "ServerScriptService.hyperscript"
-    },
-    {
-      "class": "Script",
       "name": "Script",
-      "path": "src/ServerStorage/Furocka3/Убивца/Script.lua",
+      "path": "src/ServerStorage/Furocka3/Убивца/Script.server.lua",
       "roblox_path": "ServerStorage.Furocka3.Убивца.Script"
     },
     {
@@ -928,27 +814,132 @@
     {
       "class": "Script",
       "name": "anim",
-      "path": "src/ServerStorage/NPCTemplates/Serg20087720/anim.lua",
+      "path": "src/ServerStorage/NPCTemplates/Serg20087720/anim.server.lua",
       "roblox_path": "ServerStorage.NPCTemplates.Serg20087720.anim"
     },
     {
       "class": "Script",
       "name": "quest",
-      "path": "src/ServerStorage/NPCTemplates/Serg20087720/quest.lua",
+      "path": "src/ServerStorage/NPCTemplates/Serg20087720/quest.server.lua",
       "roblox_path": "ServerStorage.NPCTemplates.Serg20087720.quest"
     },
     {
       "class": "Script",
       "name": "quest",
-      "path": "src/ServerStorage/NPCTemplates/6V4Ska9/quest.lua",
+      "path": "src/ServerStorage/NPCTemplates/6V4Ska9/quest.server.lua",
       "roblox_path": "ServerStorage.NPCTemplates.6V4Ska9.quest"
     },
     {
       "class": "Script",
       "name": "quest",
-      "path": "src/ServerStorage/NPCTemplates/Nullbit/quest.lua",
+      "path": "src/ServerStorage/NPCTemplates/Nullbit/quest.server.lua",
       "roblox_path": "ServerStorage.NPCTemplates.Nullbit.quest"
+    },
+    {
+      "class": "ModuleScript",
+      "name": "GambleScreen",
+      "path": "src/ReplicatedStorage/GambleScreen.lua",
+      "roblox_path": "ReplicatedStorage.GambleScreen",
+      "added": true
+    },
+    {
+      "class": "ModuleScript",
+      "name": "UILib",
+      "path": "src/ReplicatedStorage/UILib.lua",
+      "roblox_path": "ReplicatedStorage.UILib",
+      "added": true
+    },
+    {
+      "class": "Script",
+      "name": "BoxJob",
+      "path": "src/ServerScriptService/BoxJob.server.lua",
+      "roblox_path": "ServerScriptService.BoxJob",
+      "added": true
+    },
+    {
+      "class": "Script",
+      "name": "AdminService",
+      "path": "src/ServerScriptService/AdminService.server.lua",
+      "roblox_path": "ServerScriptService.AdminService",
+      "added": true
+    },
+    {
+      "class": "ModuleScript",
+      "name": "Notify",
+      "path": "src/ServerScriptService/Notify.lua",
+      "roblox_path": "ServerScriptService.Notify",
+      "added": true
+    },
+    {
+      "class": "LocalScript",
+      "name": "RadioMenu",
+      "path": "src/StarterPlayer/StarterPlayerScripts/RadioMenu.client.lua",
+      "roblox_path": "StarterPlayer.StarterPlayerScripts.RadioMenu",
+      "added": true
+    },
+    {
+      "class": "LocalScript",
+      "name": "DailyQuestHud",
+      "path": "src/StarterPlayer/StarterPlayerScripts/DailyQuestHud.client.lua",
+      "roblox_path": "StarterPlayer.StarterPlayerScripts.DailyQuestHud",
+      "added": true
+    },
+    {
+      "class": "LocalScript",
+      "name": "CoinsHud",
+      "path": "src/StarterPlayer/StarterPlayerScripts/CoinsHud.client.lua",
+      "roblox_path": "StarterPlayer.StarterPlayerScripts.CoinsHud",
+      "added": true
+    },
+    {
+      "class": "LocalScript",
+      "name": "EmotionMenu",
+      "path": "src/StarterPlayer/StarterPlayerScripts/EmotionMenu.client.lua",
+      "roblox_path": "StarterPlayer.StarterPlayerScripts.EmotionMenu",
+      "added": true
+    },
+    {
+      "class": "LocalScript",
+      "name": "DialogueUI",
+      "path": "src/StarterPlayer/StarterPlayerScripts/DialogueUI.client.lua",
+      "roblox_path": "StarterPlayer.StarterPlayerScripts.DialogueUI",
+      "added": true
+    },
+    {
+      "class": "LocalScript",
+      "name": "BoxJobHud",
+      "path": "src/StarterPlayer/StarterPlayerScripts/BoxJobHud.client.lua",
+      "roblox_path": "StarterPlayer.StarterPlayerScripts.BoxJobHud",
+      "added": true
+    },
+    {
+      "class": "LocalScript",
+      "name": "UpgradeShop",
+      "path": "src/StarterPlayer/StarterPlayerScripts/UpgradeShop.client.lua",
+      "roblox_path": "StarterPlayer.StarterPlayerScripts.UpgradeShop",
+      "added": true
+    },
+    {
+      "class": "LocalScript",
+      "name": "CoinPopups",
+      "path": "src/StarterPlayer/StarterPlayerScripts/CoinPopups.client.lua",
+      "roblox_path": "StarterPlayer.StarterPlayerScripts.CoinPopups",
+      "added": true
+    },
+    {
+      "class": "LocalScript",
+      "name": "EventBanner",
+      "path": "src/StarterPlayer/StarterPlayerScripts/EventBanner.client.lua",
+      "roblox_path": "StarterPlayer.StarterPlayerScripts.EventBanner",
+      "added": true
+    },
+    {
+      "class": "LocalScript",
+      "name": "AdminPanel",
+      "path": "src/StarterPlayer/StarterPlayerScripts/AdminPanel.client.lua",
+      "roblox_path": "StarterPlayer.StarterPlayerScripts.AdminPanel",
+      "added": true
     }
   ],
-  "note": "Scripts are extracted as source files; models, assets, properties and runtime links remain in the original Place file."
+  "note": "Scripts are extracted as source files; models, assets, properties and runtime links remain in the original Place file. Файлы названы по правилам Rojo: .server.lua = Script, .client.lua = LocalScript, .lua = ModuleScript. Записи с \"added\": true — скрипты, добавленные при переписывании (в исходном месте их не было)."
 }

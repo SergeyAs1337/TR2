@@ -7,6 +7,17 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 SCRIPT_CLASSES = {"Script", "LocalScript", "ModuleScript"}
+# Имена файлов по правилам Rojo: по расширению Rojo понимает класс скрипта
+EXTENSIONS = {"Script": ".server.lua", "LocalScript": ".client.lua", "ModuleScript": ".lua"}
+
+def child_items(item):
+    """Дочерние объекты: в .rbxlx они лежат прямо внутри <Item> (иногда — в <Children>)."""
+    items = list(item.findall("Item"))
+    wrapper = item.find("Children")
+    if wrapper is not None:
+        items += wrapper.findall("Item")
+    return items
+
 
 def prop_text(item, prop_name):
     props = item.find("Properties")
@@ -53,12 +64,13 @@ def main():
                 code = ""
             folder = out.joinpath(*[safe_name(x) for x in parents])
             folder.mkdir(parents=True, exist_ok=True)
-            target = folder / (name + ".lua")
+            ext = EXTENSIONS[cls]
+            target = folder / (name + ext)
             if target.exists():
                 suffix = 2
-                while (folder / f"{name}_{suffix}.lua").exists():
+                while (folder / f"{name}_{suffix}{ext}").exists():
                     suffix += 1
-                target = folder / f"{name}_{suffix}.lua"
+                target = folder / f"{name}_{suffix}{ext}"
             target.write_text(code, encoding="utf-8")
             counts[cls] += 1
             written.append({
@@ -68,10 +80,8 @@ def main():
                 "roblox_path": ".".join(path_parts),
             })
 
-        children = item.find("Children")
-        if children is not None:
-            for child in children.findall("Item"):
-                walk(child, path_parts)
+        for child in child_items(item):
+            walk(child, path_parts)
 
     for item in root.findall("Item"):
         walk(item, [])

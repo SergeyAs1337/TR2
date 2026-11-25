@@ -1,0 +1,109 @@
+{
+  "name": "TR2",
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "$className": "ReplicatedStorage",
+      "$ignoreUnknownInstances": true,
+      "EventManager": {
+        "$path": "src/ReplicatedStorage/EventManager.lua"
+      },
+      "GambleScreen": {
+        "$path": "src/ReplicatedStorage/GambleScreen.lua"
+      },
+      "UILib": {
+        "$path": "src/ReplicatedStorage/UILib.lua"
+      }
+    },
+    "ServerScriptService": {
+      "$className": "ServerScriptService",
+      "$ignoreUnknownInstances": true,
+      "AdminService": {
+        "$path": "src/ServerScriptService/AdminService.server.lua"
+      },
+      "BoxJob": {
+        "$path": "src/ServerScriptService/BoxJob.server.lua"
+      },
+      "DanceServer": {
+        "$path": "src/ServerScriptService/DanceServer.server.lua"
+      },
+      "ItemSAVE": {
+        "$path": "src/ServerScriptService/ItemSAVE.server.lua"
+      },
+      "LeaderBoard": {
+        "$path": "src/ServerScriptService/LeaderBoard.server.lua"
+      },
+      "LeaderboardManager": {
+        "$path": "src/ServerScriptService/LeaderboardManager.server.lua"
+      },
+      "Notify": {
+        "$path": "src/ServerScriptService/Notify.lua"
+      },
+      "RadioHandler": {
+        "$path": "src/ServerScriptService/RadioHandler.server.lua"
+      },
+      "RandomEventController": {
+        "$path": "src/ServerScriptService/RandomEventController.server.lua"
+      },
+      "UpgradeHandler": {
+        "$path": "src/ServerScriptService/UpgradeHandler.server.lua"
+      },
+      "achivki": {
+        "$path": "src/ServerScriptService/achivki.server.lua"
+      },
+      "dialogsquests": {
+        "$path": "src/ServerScriptService/dialogsquests.server.lua"
+      },
+      "everydaycount": {
+        "$path": "src/ServerScriptService/everydaycount.server.lua"
+      },
+      "gamble": {
+        "$path": "src/ServerScriptService/gamble.server.lua"
+      },
+      "lookedachievent": {
+        "$path": "src/ServerScriptService/lookedachievent.server.lua"
+      },
+      "time_set": {
+        "$path": "src/ServerScriptService/time_set.server.lua"
+      }
+    },
+    "StarterPlayer": {
+      "$className": "StarterPlayer",
+      "$ignoreUnknownInstances": true,
+      "StarterPlayerScripts": {
+        "$className": "StarterPlayerScripts",
+        "$ignoreUnknownInstances": true,
+        "AdminPanel": {
+          "$path": "src/StarterPlayer/StarterPlayerScripts/AdminPanel.client.lua"
+        },
+        "BoxJobHud": {
+          "$path": "src/StarterPlayer/StarterPlayerScripts/BoxJobHud.client.lua"
+        },
+        "CoinPopups": {
+          "$path": "src/StarterPlayer/StarterPlayerScripts/CoinPopups.client.lua"
+        },
+        "CoinsHud": {
+          "$path": "src/StarterPlayer/StarterPlayerScripts/CoinsHud.client.lua"
+        },
+        "DailyQuestHud": {
+          "$path": "src/StarterPlayer/StarterPlayerScripts/DailyQuestHud.client.lua"
+        },
+        "DialogueUI": {
+          "$path": "src/StarterPlayer/StarterPlayerScripts/DialogueUI.client.lua"
+        },
+        "EmotionMenu": {
+          "$path": "src/StarterPlayer/StarterPlayerScripts/EmotionMenu.client.lua"
+        },
+        "EventBanner": {
+          "$path": "src/StarterPlayer/StarterPlayerScripts/EventBanner.client.lua"
+        },
+        "RadioMenu": {
+          "$path": "src/StarterPlayer/StarterPlayerScripts/RadioMenu.client.lua"
+        },
+        "UpgradeShop": {
+          "$path": "src/StarterPlayer/StarterPlayerScripts/UpgradeShop.client.lua"
+        }
+      }
+    }
+  }
+}

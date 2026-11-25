@@ -1,11 +1,6 @@
-# Roblox Studio / Rojo
+# Файлы места не храним в git (большие, могут содержать лишнее)
 *.rbxl
 *.rbxlx
 *.rbxm
 *.rbxmx
-
-# Local backups and temporary files
-*.bak
-*.tmp
-.DS_Store
-Thumbs.db
+__pycache__/

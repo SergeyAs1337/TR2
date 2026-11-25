@@ -21,7 +21,7 @@
 |---|---|---|
 | `ReplicatedStorage/UILib.lua` | ModuleScript, замена | Тема `THEME` и компоненты: `actionButton` (цвета `accent`, `good`, `bad`, `warn`, `neutral`; подсветка и нажатие), `window`, `panel`, `toast`, `text`, `stroke`, `tween`, `bump`, `shake`, `fitScale`, `formatShort` («1.25M»). `UILib.open("Имя")` открывает окно из любого LocalScript. Старые функции v1 оставлены. |
 | `ReplicatedStorage/GambleScreen.lua` | ModuleScript, замена | Автомат: три барабана (семёрка + 🍒🍋🔔💎⭐🍀), крутятся и останавливаются по очереди на результате с сервера. x10 — три семёрки, x2 — три одинаковых, проигрыш — разные. Быстрые ставки «½», «x2», «+1К», «Всё», баланс, «Проиграно всеми». Окно после ставки не закрывается. Ставку больше баланса не отправляет. Если сервер не ответил 5 с — барабаны останавливаются. |
-| `ServerScriptService/gamble.lua` | Script, замена | Отвечает клиенту результатом. **Ставить вместе с `GambleScreen`**: без ответа сервера барабаны остановятся на «Сервер не ответил». |
+| `ServerScriptService/gamble.server.lua` | Script, замена | Отвечает клиенту результатом. **Ставить вместе с `GambleScreen`**: без ответа сервера барабаны остановятся на «Сервер не ответил». |
 | `StarterPlayerScripts/CoinsHud.lua` | LocalScript, замена | Слева посередине: плашки 🪙 монет и 💀 смертей (число плавно «докручивается»), под ними кнопка «⬆ Апгрейды». Свои кнопки меню добавляются в `MENU_BUTTONS`. |
 | `StarterPlayerScripts/CoinPopups.lua` | LocalScript, замена | «+250 🪙» с тёмным контуром (читается поверх любого фона) взлетает и тает; крупные суммы (от `BIG_GAIN`) крупнее. |
 | `StarterPlayerScripts/EventBanner.lua` | LocalScript, **новый** | Баннер событий сверху: тёмная плашка с оранжевой полоской и подписью «СОБЫТИЕ». Объявления админа («📢 …») — с синей полоской и подписью «ОБЪЯВЛЕНИЕ». Заменяет `StarterGui/EventUI` (удалить). |
@@ -40,9 +40,9 @@
 
 | Файл | Куда в Studio | Что |
 |---|---|---|
-| `ServerScriptService/BoxJob.lua` | Script, **новый** | Вся логика работы на сервере: взять коробку, верёвки, замедление, сдача, деньги, серия, взрыв при смерти, защита от телепорта. |
+| `ServerScriptService/BoxJob.server.lua` | Script, **новый** | Вся логика работы на сервере: взять коробку, верёвки, замедление, сдача, деньги, серия, взрыв при смерти, защита от телепорта. |
 | `StarterPlayerScripts/BoxJobHud.lua` | LocalScript, **новый** | Плашка работы снизу экрана и удар фуры по коробкам (физикой коробок управляет игрок, поэтому отбрасывает их клиент). |
-| `ServerScriptService/UpgradeHandler.lua` | Script, замена | Одна строка: ставит атрибут `BaseWalkSpeed` на персонажа, чтобы замедление от коробок считалось от скорости с апгрейдом. |
+| `ServerScriptService/UpgradeHandler.server.lua` | Script, замена | Одна строка: ставит атрибут `BaseWalkSpeed` на персонажа, чтобы замедление от коробок считалось от скорости с апгрейдом. |
 
 **Как играется**
 - На почте игрок **зажимает** кнопку «Взять коробку» (0.6 с). Коробка физическая и висит на верёвке: первая — за игроком, следующие — цепочкой.
@@ -68,16 +68,16 @@
 | Файл | Куда в Studio | Что |
 |---|---|---|
 | `ServerScriptService/Notify.lua` | ModuleScript, **новый** | Сообщения игроку с сервера: `Notify.send(player, текст, цвет)` (уведомление) и `Notify.openScreen(player, "Upgrades")` (открыть окно). RemoteEvent-ы `Notify` и `OpenScreen` создаёт сам. Клиентская часть в `CoinsHud`. |
-| `ServerScriptService/everydaycount.lua` | Script, замена | **Дейлики починены.** Сбой загрузки больше не считается «новым днём» (раньше награды можно было получить заново, а сохранение затирало прогресс): загрузка повторяется, а пока данных нет, задание не считается и не пишется. Сохранение раз в минуту, при выходе и в `BindToClose` вместо `SetAsync` на каждой смерти (выедало лимит DataStore). `UpdateAsync` со слиянием. Награда ждёт загрузки `leaderstats`, а не теряется. Хранилище и формат прежние — прогресс игроков сохраняется. |
+| `ServerScriptService/everydaycount.server.lua` | Script, замена | **Дейлики починены.** Сбой загрузки больше не считается «новым днём» (раньше награды можно было получить заново, а сохранение затирало прогресс): загрузка повторяется, а пока данных нет, задание не считается и не пишется. Сохранение раз в минуту, при выходе и в `BindToClose` вместо `SetAsync` на каждой смерти (выедало лимит DataStore). `UpdateAsync` со слиянием. Награда ждёт загрузки `leaderstats`, а не теряется. Хранилище и формат прежние — прогресс игроков сохраняется. |
 | `StarterPlayerScripts/DailyQuestHud.lua` | LocalScript, **новый** | Плашка задания сверху: «7 / 15», полоска, отметки наград +30/+50/+150, после выполнения — время до нового задания. Читает атрибуты игрока. Заменяет `StarterGui/DailyQuestGui`. |
-| `ServerScriptService/dialogsquests.lua` | Script, замена | Движок диалогов: `Reward` может вернуть имя следующего шага, ошибки в `Reward` не ломают диалог, клиенту уходят только тексты, проверка типов, частоты и расстояния до NPC (поле `Npc` в модуле диалога). Запуск с сервера: `ServerStorage.DialogueServer.StartDialogue` (BindableEvent, создаётся сам). |
+| `ServerScriptService/dialogsquests.server.lua` | Script, замена | Движок диалогов: `Reward` может вернуть имя следующего шага, ошибки в `Reward` не ломают диалог, клиенту уходят только тексты, проверка типов, частоты и расстояния до NPC (поле `Npc` в модуле диалога). Запуск с сервера: `ServerStorage.DialogueServer.StartDialogue` (BindableEvent, создаётся сам). |
 | `ServerStorage/NPCTemplates/*/quest.lua` | Script, замена | **Диалоги с NPC, судя по коду, не запускались:** это серверные Script-ы, а они сравнивали игрока с `LocalPlayer` (на сервере nil) и звали `FireServer`. Теперь работают и как Script, и с RunContext = Client. Nullbit открывает окно апгрейдов через `Notify` (старый способ ломался на новом окне). |
 | `ReplicatedStorage/Dialogues/ice_cream.lua`, `hello_world.lua` | ModuleScript, замена | Мороженое: нормальные шаги «купил / не хватает монет» вместо пустого шага с «…». В `hello_world` убраны награды «+0 монет», которые падали, пока не загрузились монеты. |
 | `StarterPlayerScripts/DialogueUI.lua` | LocalScript, **новый** | Окно диалога снизу: имя NPC, печать по буквам (кириллица больше не «ломается»), клик / E / Enter — дальше, варианты кнопками и цифрами 1–9. Заменяет `StarterGui/DialogueGui`. |
-| `ServerScriptService/RadioHandler.lua` | Script, замена | **Свой трек теперь проверяет геймпасс на сервере** (раньше только интерфейс: любой мог включить любой звук). Одно радио на игрока, лимит смены трека, проверка ID, атрибут `NowPlaying`, ответ клиенту об ошибке. |
+| `ServerScriptService/RadioHandler.server.lua` | Script, замена | **Свой трек теперь проверяет геймпасс на сервере** (раньше только интерфейс: любой мог включить любой звук). Одно радио на игрока, лимит смены трека, проверка ID, атрибут `NowPlaying`, ответ клиенту об ошибке. |
 | `StarterPlayerScripts/RadioMenu.lua` | LocalScript, **новый** | Меню радио: «Сейчас играет», список треков, свой трек по ID (без геймпасса предлагает купить), «Стоп», «Подобрать радио». Заменяет `StarterGui/RadioUI`. |
-| `ReplicatedStorage/Radio/LocalScript.lua` | LocalScript, замена | Без отладочного вывода на каждый клик. |
-| `ServerScriptService/DanceServer.lua` | Script, замена | После смерти во время танца можно снова танцевать (раньше — нет). Новый танец сменяет старый. Останавливается только танец, а не все анимации. Скорость от апгрейда не сбрасывается. Атрибут `Dancing`. |
+| `ReplicatedStorage/Radio/LocalScript.client.lua` | LocalScript, замена | Без отладочного вывода на каждый клик. |
+| `ServerScriptService/DanceServer.server.lua` | Script, замена | После смерти во время танца можно снова танцевать (раньше — нет). Новый танец сменяет старый. Останавливается только танец, а не все анимации. Скорость от апгрейда не сбрасывается. Атрибут `Dancing`. |
 | `StarterPlayerScripts/EmotionMenu.lua` | LocalScript, **новый** | Меню эмоций (G или кнопка «Эмоции» в HUD, на телефоне тоже): сетка танцев, текущий подсвечен, «Остановить». Остановка пробелом / прыжком / B уходит на сервер, только если игрок танцует. Заменяет `StarterGui/EmotionGui` и `ewq`. |
 | `StarterPlayerScripts/CoinsHud.lua` | LocalScript, замена | Кнопка «💃 Эмоции», приём `Notify` и `OpenScreen` с сервера. |
 
@@ -118,19 +118,19 @@
 
 | Файл в `src/` | Где в Studio | Действие | Что сделано |
 |---|---|---|---|
-| `ServerScriptService/gamble.lua` | `ServerScriptService/gamble` | замена | Единый обработчик ставок (раньше `gamble` и `losssaved` слушали одно событие: двойное списание и два розыгрыша). Проверка ставки (NaN, дробные, ≤0, >1e9), кулдаун 1 с. Общий счётчик проигранного через `UpdateAsync` + `BindToClose`. Шансы в таблице `OUTCOMES`: 1% x10, 24% x2 (подтвердить, в старых скриптах они расходились). **v2:** отвечает клиенту результатом ставки (`{ ok, bet, multiplier, win }` или `{ ok = false, reason }`), для барабанов автомата. |
-| `ServerScriptService/LeaderboardManager.lua` (v4.1) | `ServerScriptService/LeaderboardManager` | замена | Сбой загрузки больше не затирает данные (5 попыток, затем кик). `leaderstats` создаётся после загрузки. Автосохранение раз в 90 с, параллельный `BindToClose`. Рейтинг смертей пишется в `OrderedDataStore`. Награда за смерть умножается на атрибут `CoinMultiplier`. Админ-команды проверяют аргументы. |
-| `ServerScriptService/LeaderBoard.lua` | `ServerScriptService/LeaderBoard` | замена | Топ-1000 из `OrderedDataStore`: 10 запросов вместо тысяч `GetAsync`. Имена пачками через `UserService`, надписи переиспользуются. |
-| `ServerScriptService/UpgradeHandler.lua` | `ServerScriptService/UpgradeHandler` | замена | Единая система апгрейдов вместо двух. Читает оба хранилища (`PlayerUpgrades`, `PlayerUpgradesV1`), берёт максимум уровней. Защита от двойных кликов, проверка имени апгрейда, запись через `UpdateAsync`. Множитель монет теперь атрибут `CoinMultiplier` (раньше умножал и выигрыши казино: при x3 казино становилось прибыльным). |
-| `ServerScriptService/RandomEventController.lua` | `ServerScriptService/RandomEventController` | замена | Ошибка в событии больше не убивает контроллер. Не запускает события на пустом сервере и поверх события админа, не повторяет событие подряд. Выключатель и время следующего события для админ-панели. |
-| `ServerScriptService/AdminService.lua` | `ServerScriptService/AdminService` (Script) | **новый** | Серверная часть админ-панели: проверка админа и аргументов на каждый запрос, лимит 8 запросов/с, журнал. Действия: события, монеты, убить/вылечить/заморозить, телепорт, кик, объявление (через фильтр Roblox). Совместим со старым `AdminResetGui`. |
+| `ServerScriptService/gamble.server.lua` | `ServerScriptService/gamble` | замена | Единый обработчик ставок (раньше `gamble` и `losssaved` слушали одно событие: двойное списание и два розыгрыша). Проверка ставки (NaN, дробные, ≤0, >1e9), кулдаун 1 с. Общий счётчик проигранного через `UpdateAsync` + `BindToClose`. Шансы в таблице `OUTCOMES`: 1% x10, 24% x2 (подтвердить, в старых скриптах они расходились). **v2:** отвечает клиенту результатом ставки (`{ ok, bet, multiplier, win }` или `{ ok = false, reason }`), для барабанов автомата. |
+| `ServerScriptService/LeaderboardManager.server.lua` (v4.1) | `ServerScriptService/LeaderboardManager` | замена | Сбой загрузки больше не затирает данные (5 попыток, затем кик). `leaderstats` создаётся после загрузки. Автосохранение раз в 90 с, параллельный `BindToClose`. Рейтинг смертей пишется в `OrderedDataStore`. Награда за смерть умножается на атрибут `CoinMultiplier`. Админ-команды проверяют аргументы. |
+| `ServerScriptService/LeaderBoard.server.lua` | `ServerScriptService/LeaderBoard` | замена | Топ-1000 из `OrderedDataStore`: 10 запросов вместо тысяч `GetAsync`. Имена пачками через `UserService`, надписи переиспользуются. |
+| `ServerScriptService/UpgradeHandler.server.lua` | `ServerScriptService/UpgradeHandler` | замена | Единая система апгрейдов вместо двух. Читает оба хранилища (`PlayerUpgrades`, `PlayerUpgradesV1`), берёт максимум уровней. Защита от двойных кликов, проверка имени апгрейда, запись через `UpdateAsync`. Множитель монет теперь атрибут `CoinMultiplier` (раньше умножал и выигрыши казино: при x3 казино становилось прибыльным). |
+| `ServerScriptService/RandomEventController.server.lua` | `ServerScriptService/RandomEventController` | замена | Ошибка в событии больше не убивает контроллер. Не запускает события на пустом сервере и поверх события админа, не повторяет событие подряд. Выключатель и время следующего события для админ-панели. |
+| `ServerScriptService/AdminService.server.lua` | `ServerScriptService/AdminService` (Script) | **новый** | Серверная часть админ-панели: проверка админа и аргументов на каждый запрос, лимит 8 запросов/с, журнал. Действия: события, монеты, убить/вылечить/заморозить, телепорт, кик, объявление (через фильтр Roblox). Совместим со старым `AdminResetGui`. |
 | `ReplicatedStorage/EventManager.lua` | `ReplicatedStorage/EventManager` (ModuleScript) | замена | Починены события: «Дождь» (`RainFall` лежит в модели `ramki`), «Нексбот» падал при запуске. Единые `Events.Start/Stop` (одно событие за раз, ошибка в событии не пробивается наружу). «Дождь из фур»: фура раз в 0.5 с вместо каждого кадра. «Перемешивание»: корректные пары, без сидящих и мёртвых. «Вьетнам»: деревья/дороги/здания не трогаются, ≤120 деталей на взрыв, ≤500 сразу, обломки возвращаются через 10 с. «Нексбот»: собственное движение вместо гуманоида R6 без ног; упирается в стены и скользит вдоль них; обход через `PathfindingService`; прыгает (12 студов); убивает только при прямой видимости; появляется перед игроком. |
 | `ReplicatedStorage/UILib.lua` | `ReplicatedStorage/UILib` (ModuleScript) | **новый** | **v3:** тема в стиле админ-панели и компоненты, см. раздел 0. |
 | `ReplicatedStorage/GambleScreen.lua` | `ReplicatedStorage/GambleScreen` (ModuleScript) | **новый** | **v3:** автомат с барабанами, см. раздел 0. |
-| `ReplicatedStorage/odnorykiy_bandit/LocalScript.lua` | `ReplicatedStorage/odnorykiy_bandit/LocalScript` | замена | Теперь только открывает окно (`GambleScreen`). |
-| `StarterPlayer/StarterPlayerScripts/AdminPanel.lua` | `StarterPlayerScripts/AdminPanel` (LocalScript) | **новый** | Админ-панель (кнопка «🛠 Админ» или F2): вкладки События, Игроки, Сервер, Журнал. Строится кодом. |
-| `StarterPlayer/StarterPlayerScripts/CoinsHud.lua` | `StarterPlayerScripts/CoinsHud` (LocalScript) | **новый** | **v3:** HUD монет и смертей с кнопкой «Апгрейды», см. раздел 0. |
-| `StarterPlayer/StarterPlayerScripts/CoinPopups.lua` | `StarterPlayerScripts/CoinPopups` (LocalScript) | **новый** | **v3:** всплывашки «+N 🪙», см. раздел 0. Первое изменение не теряется, не больше 12 одновременно. |
+| `ReplicatedStorage/odnorykiy_bandit/LocalScript.client.lua` | `ReplicatedStorage/odnorykiy_bandit/LocalScript` | замена | Теперь только открывает окно (`GambleScreen`). |
+| `StarterPlayer/StarterPlayerScripts/AdminPanel.client.lua` | `StarterPlayerScripts/AdminPanel` (LocalScript) | **новый** | Админ-панель (кнопка «🛠 Админ» или F2): вкладки События, Игроки, Сервер, Журнал. Строится кодом. |
+| `StarterPlayer/StarterPlayerScripts/CoinsHud.client.lua` | `StarterPlayerScripts/CoinsHud` (LocalScript) | **новый** | **v3:** HUD монет и смертей с кнопкой «Апгрейды», см. раздел 0. |
+| `StarterPlayer/StarterPlayerScripts/CoinPopups.client.lua` | `StarterPlayerScripts/CoinPopups` (LocalScript) | **новый** | **v3:** всплывашки «+N 🪙», см. раздел 0. Первое изменение не теряется, не больше 12 одновременно. |
 | `tools/SeedDeathsLeaderboard.lua` | **не в игру** | запустить один раз | Переносит смерти старых игроков в новую таблицу лидеров. Запуск из Command Bar в Studio (опубликованное место, включён доступ Studio к API). Медленно (~60–70 игроков в минуту), можно прерывать и повторять. |
 
 ## 2. Что удалить
@@ -149,6 +149,9 @@
 | Остальное из раздела 0б | `DailyQuestGui`, `DialogueGui`, `RadioUI`, `EmotionGui`, `ewq`, `voice upgrade`, `Radio/RadioModel/Base/Script`. |
 
 ## 3. Порядок установки
+
+**Через Rojo:** см. `ROJO.md` — он ставит все изменённые скрипты разом, а `tools/cleanup_old_scripts.lua` удаляет старые. Ниже — порядок для установки вручную.
+
 
 1. **Данные и казино:** `LeaderboardManager`, `LeaderBoard`, `gamble`; удалить `losssaved`; опубликовать; один раз запустить `tools/SeedDeathsLeaderboard.lua`.
 2. **Апгрейды:** `UpgradeHandler` и клиентский `UpgradeShop` (вместо `StarterGui/UpgradeGUI`); удалить `hyperscript`. Ставить вместе с п.1: множитель монет работает через `LeaderboardManager` v4.1.
