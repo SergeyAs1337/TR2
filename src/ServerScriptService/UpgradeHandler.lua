@@ -109,7 +109,10 @@ local function applyHealth(humanoid, level, healToFull)
 end
 
 local function applySpeed(humanoid, level)
-	humanoid.WalkSpeed = 16 + (level - 1) * 16 / 9 -- 16 -> 32
+	local speed = 16 + (level - 1) * 16 / 9 -- 16 -> 32
+	-- Базовая скорость для других систем: BoxJob вычитает из неё замедление от коробок
+	humanoid.WalkSpeed = speed
+	humanoid:SetAttribute("BaseWalkSpeed", speed) -- после WalkSpeed: BoxJob пересчитает замедление
 end
 
 local function startRegen(player, humanoid)

@@ -33,10 +33,11 @@ sed 's/^local FORMAT_NUMBERS = true.*$/local FORMAT_NUMBERS = false/' $S/Starter
       "radioServer:ServerScriptService/RadioHandler.lua" "radioMenu:StarterPlayer/StarterPlayerScripts/RadioMenu.lua" \
       "danceServer:ServerScriptService/DanceServer.lua" "emotionMenu:StarterPlayer/StarterPlayerScripts/EmotionMenu.lua" \
       "eatIce:ReplicatedStorage/IceCream/EatServer.lua" "eatMilk:ReplicatedStorage/milkynet/EatServer.lua" \
-      "itemSave:ServerScriptService/ItemSAVE.lua"; do
+      "itemSave:ServerScriptService/ItemSAVE.lua" \
+      "boxJob:ServerScriptService/BoxJob.lua" "boxJobHud:StarterPlayer/StarterPlayerScripts/BoxJobHud.lua"; do
     echo "RUN.${pair%%:*} = function()"; cat "$S/${pair#*:}"; echo; echo "end"
   done
-  cat ev_tests.lua ev_tests2.lua ev_tests3.lua ev_tests4.lua ev_tests5.lua ev_tests6.lua ev_tests7.lua ev_tests8.lua
+  cat ev_tests.lua ev_tests2.lua ev_tests3.lua ev_tests4.lua ev_tests5.lua ev_tests6.lua ev_tests7.lua ev_tests8.lua ev_tests9.lua
 } > $T/combined.lua
 "$LUAU" $T/combined.lua > $T/out.txt 2>&1 || true
 if [ -n "$KEEP" ]; then cp $T/combined.lua $T/out.txt "$KEEP"/; fi

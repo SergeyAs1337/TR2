@@ -45,7 +45,7 @@ V3.__mul = function(a, b)
 Vector3 = {new = v3, zero = v3(0, 0, 0), one = v3(1, 1, 1), yAxis = v3(0, 1, 0)}
 local CF = {}
 CF.__mul = function(a, b) return CFrame.new(rawget(a, "_p") + rawget(b, "_p")) end
-CF.__index = function(t, k) if k == "Position" then return rawget(t, "_p") elseif k == "LookVector" then return rawget(t, "_look") end end
+CF.__index = function(t, k) if k == "Position" then return rawget(t, "_p") elseif k == "LookVector" then return rawget(t, "_look") elseif k == "PointToObjectSpace" then return function(self, v) return v - rawget(self, "_p") end end end
 CFrame = {new = function(a, b, c) local p = type(a) == "number" and v3(a, b, c) or a; return setmetatable({_p = p, _look = v3(0, 0, -1)}, CF) end}
 UDim2 = {new = function(a, b, c, d) return {a, b, c, d} end}
 Color3 = {new = function(r, g, b) return {r, g, b} end, fromRGB = function(r, g, b) return {r, g, b} end, fromHSV = function(hh, s, v) return {hsv = {hh, s, v}} end}
@@ -61,6 +61,7 @@ local function Signal()
 	local s = {handlers = {}}
 	function s:Connect(f) table.insert(self.handlers, f); local h = f; return {Disconnect = function() for i, x in ipairs(s.handlers) do if x == h then table.remove(s.handlers, i) break end end end} end
 	function s:Fire(...) for _, h in ipairs({table.unpack(self.handlers)}) do task.spawn(h, ...) end end
+	function s:Once(f) local c; c = self:Connect(function(...) c.Disconnect(); f(...) end); return c end
 	return s
 end
 
@@ -83,7 +84,7 @@ end
 Inst_mt.__index = function(t, k)
 	local m = methods[k]; if m then return m end
 	local p = rawget(t, "_p")
-	if (k == "Touched" or k == "MoveToFinished" or k == "CharacterAdded" or k == "Activated" or k == "FocusLost" or k == "MouseEnter" or k == "MouseLeave" or k == "MouseButton1Down" or k == "MouseButton1Up" or k == "OnClientEvent" or k == "Died" or k == "ChildAdded" or k == "CharacterRemoving" or k == "Jumping" or k == "Triggered" or k == "Stopped" or k == "Event") then if not p[k] then p[k] = Signal() end return p[k] end
+	if (k == "Touched" or k == "MoveToFinished" or k == "CharacterAdded" or k == "Activated" or k == "FocusLost" or k == "MouseEnter" or k == "MouseLeave" or k == "MouseButton1Down" or k == "MouseButton1Up" or k == "OnClientEvent" or k == "Died" or k == "ChildAdded" or k == "CharacterRemoving" or k == "Jumping" or k == "Triggered" or k == "Stopped" or k == "Event" or k == "AncestryChanged" or k == "DescendantAdded") then if not p[k] then p[k] = Signal() end return p[k] end
 	if k == "AssemblyRootPart" then return p.AssemblyRootPart or t end
 	if p[k] ~= nil then return p[k] end
 	return methods.FindFirstChild(t, k)
@@ -95,6 +96,7 @@ Inst_mt.__newindex = function(t, k, v)
 		if old then for i, c in ipairs(rawget(old, "_kids")) do if c == t then table.remove(rawget(old, "_kids"), i) break end end end
 		p.Parent = v
 		if v then table.insert(rawget(v, "_kids"), t) end
+		if old ~= v and rawget(p, "AncestryChanged") then p.AncestryChanged:Fire(t, v) end
 	elseif k == "CFrame" then p.CFrame = v; p.Position = v.Position
 	elseif k == "Position" then p.Position = v; p.CFrame = CFrame.new(v)
 	else local old = p[k]; p[k] = v; if old ~= v and p._changed and p._changed[k] then p._changed[k]:Fire() end end
@@ -112,6 +114,7 @@ function methods.FindFirstChild(self, name, recursive)
 end
 methods.WaitForChild = methods.FindFirstChild
 function methods.FindFirstChildWhichIsA(self, cls) for _, c in ipairs(rawget(self, "_kids")) do if methods.IsA(c, cls) then return c end end end
+function methods.ChangeState(self, state) rawget(self, "_p").lastState = state end
 function methods.GetPivot(self) local pp = rawget(self, "_p").PrimaryPart; if pp then return pp.CFrame end return self.CFrame end
 function methods.LoadAnimation(self, anim) local tr = {Looped = false, IsPlaying = false, Stopped = nil, AnimationId = anim.AnimationId}; local sig = nil
 	tr.Stopped = (function() local s = {handlers = {}}; function s:Connect(f) table.insert(self.handlers, f); return {Disconnect = function() end} end; function s:Fire() for _, h in ipairs(self.handlers) do h() end end; return s end)()
@@ -255,6 +258,11 @@ local renderStepped = Signal(); RunServiceSvc.RenderStepped = renderStepped
 local function startHeartbeat() task.spawn(function() while true do heartbeat:Fire(1 / 60); task.wait(1 / 60) end end) end
 local tweenLog = {}
 TweenInfo = {new = function(t) return {Time = t or 1} end}
+local tags = {}
+local CollectionSvc = {GetTagged = function(self, tag) return tags[tag] or {} end, GetInstanceAddedSignal = function(self, tag) return Signal() end}
+local PhysicsSvc = {groups = {}, RegisterCollisionGroup = function(self, g) self.groups[g] = true end, CollisionGroupSetCollidable = function() end}
+PhysicalProperties = {new = function(...) return {...} end}
+BrickColor = BrickColor or {new = function(n) return {Name = n} end}
 local CASvc = {bound = {}, BindAction = function(self, name, fn, touch, ...) self.bound[name] = {fn = fn, keys = {...}} end, UnbindAction = function(self, name) self.bound[name] = nil end}
 local MarketSvc = {owns = {}, prompts = {}, failCheck = false,
 	UserOwnsGamePassAsync = function(self, uid, pass) if self.failCheck then error("market down") end return self.owns[uid] == true end,
@@ -281,7 +289,7 @@ end}
 Enum.TextFilterContext = {PublicChat = "PublicChat"}
 game = {PlaceVersion = 42, JobId = "abcdef0123456789", GetService = function(self, n)
 	local t = {TweenService = TweenSvc, UserInputService = UIS, TextService = TextServiceSvc, Players = PlayersSvc, Workspace = Workspace, ReplicatedStorage = ReplicatedStorage, ServerStorage = ServerStorage,
-		ServerScriptService = ServerScriptService, HttpService = HttpSvc, ContextActionService = CASvc, MarketplaceService = MarketSvc, Debris = Debris, PathfindingService = Pathfinding, RunService = RunServiceSvc}
+		ServerScriptService = ServerScriptService, HttpService = HttpSvc, ContextActionService = CASvc, CollectionService = CollectionSvc, PhysicsService = PhysicsSvc, MarketplaceService = MarketSvc, Debris = Debris, PathfindingService = Pathfinding, RunService = RunServiceSvc}
 	return t[n]
 end}
 local EventsModuleInst = newInst("ModuleScript", "EventManager"); EventsModuleInst.Parent = ReplicatedStorage
