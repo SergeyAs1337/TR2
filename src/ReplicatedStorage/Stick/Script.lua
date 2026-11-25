@@ -1,3 +1,5 @@
+-- ReplicatedStorage/Stick/Script  v2: выстрел только из своей палки в руках, кулдаун 0.5 с,
+-- проверка точки прицела. Шанс и урон прежние.
 local Tool = script.Parent
 local Handle = Tool:WaitForChild("Handle")
 local FireSound = Handle:FindFirstChild("FireSound")
@@ -8,7 +10,7 @@ local BadgeService = game:GetService("BadgeService")
 local BADGE_ID = 4296499034843943
 local DAMAGE = 9999
 local BEAM_LENGTH = 500
-local FIRE_CHANCE = 1 / 365 -- 1 к 1 для теста (выпадает всегда)
+local FIRE_CHANCE = 1 / 365 -- шанс, что палка «выстрелит»
 
 local function tryAwardBadge(player)
 	local success, hasBadge = pcall(function()
@@ -39,7 +41,7 @@ end
 local function fireLaser(fromPos, toPos, ignoreList)
 	local direction = (toPos - fromPos).Unit * BEAM_LENGTH
 	local rayParams = RaycastParams.new()
-	rayParams.FilterType = Enum.RaycastFilterType.Blacklist
+	rayParams.FilterType = Enum.RaycastFilterType.Exclude
 	rayParams.FilterDescendantsInstances = ignoreList
 
 	local result = workspace:Raycast(fromPos, direction, rayParams)
@@ -79,13 +81,31 @@ local function fireLaser(fromPos, toPos, ignoreList)
 	end
 end
 
+local COOLDOWN = 0.5 -- секунд между попытками одного игрока (раньше без ограничений)
+local MAX_AIM_DISTANCE = 1000
+local lastShot = {}
+
+local function validTarget(v)
+	return typeof(v) == "Vector3" and v.X == v.X and v.Y == v.Y and v.Z == v.Z
+		and math.abs(v.X) < 1e6 and math.abs(v.Y) < 1e6 and math.abs(v.Z) < 1e6
+end
+
 Remote.OnServerEvent:Connect(function(player, mouseHit)
 	local character = player.Character
 	if not character then return end
+	-- стрелять можно только палкой, которую ЭТОТ игрок держит в руках
+	-- (раньше можно было «выстрелить» из чужой палки)
+	if Tool.Parent ~= character then return end
+	if not validTarget(mouseHit) then return end
+	local fromCheck = Handle.Position
+	if (mouseHit - fromCheck).Magnitude < 0.5 or (mouseHit - fromCheck).Magnitude > MAX_AIM_DISTANCE then return end
+
+	local now = os.clock()
+	if lastShot[player] and now - lastShot[player] < COOLDOWN then return end
+	lastShot[player] = now
 
 	-- Проверяем шанс выстрела
 	if math.random() > FIRE_CHANCE then
-		print("[Server] Палка не сработала.")
 		return
 	end
 
@@ -99,7 +119,9 @@ Remote.OnServerEvent:Connect(function(player, mouseHit)
 
 	fireLaser(fromPosition, mouseHit, ignoreList)
 
-	tryAwardBadge(player)
+	task.spawn(tryAwardBadge, player)
+end)
 
-	print(player.Name .. " выстрелил палкой по курсору!")
+game:GetService("Players").PlayerRemoving:Connect(function(player)
+	lastShot[player] = nil
 end)

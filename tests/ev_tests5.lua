@@ -1,5 +1,5 @@
 do
-print("--- G. GambleScreen v2 и UILib")
+print("--- G. GambleScreen v3 и UILib v3")
 local oldEnum = Enum
 Enum = setmetatable({}, {__index = function(_, a) return setmetatable({}, {__index = function(_, b) return a .. "." .. b end}) end})
 local function find(root, path) local cur = root; for name in string.gmatch(path, "[^%.]+") do cur = cur and cur:FindFirstChild(name) end return cur end
@@ -27,7 +27,8 @@ local screen = GS.get(player)
 local gui = player:FindFirstChild("PlayerGui"):FindFirstChild("GambleUI")
 local holder = gui and gui:FindFirstChild("Window")
 check("G1. окно GambleUI создано кодом, закрыто, не пересоздаётся при респавне", gui ~= nil and holder ~= nil and holder.Visible == false and gui.ResetOnSpawn == false)
-check("G1. мультяшное окно: шапка «ОДНОРУКИЙ БАНДИТ», три барабана, кнопка «КРУТИТЬ!», крестик", find(holder, "Panel.Header.Title").Text == "🎰 ОДНОРУКИЙ БАНДИТ" and #screen.reels == 3 and screen.spinButton.label.Text == "КРУТИТЬ!" and find(holder, "Panel.CloseButton") ~= nil)
+check("G1. окно: заголовок «Однорукий бандит», три барабана, кнопка «Крутить», крестик", find(holder, "Panel.Header.Title").Text == "🎰 Однорукий бандит" and #screen.reels == 3 and screen.spinButton.label.Text == "Крутить" and find(holder, "Panel.Header.CloseButton") ~= nil)
+check("G1. цвета как у админ-панели: фон окна (24,26,33)", find(holder, "Panel").BackgroundColor3 == UI.THEME.background and UI.THEME.background[1] == 24 and UI.THEME.background[2] == 26 and UI.THEME.background[3] == 33)
 check("G1. семёрка — та же картинка rbxassetid://85504738002100", find(holder, "Panel.Body.Reels.Reel1.Seven").Image == "rbxassetid://85504738002100")
 check("G1. окно подстраивается под экран (FitScale) и появляется с анимацией (PopScale)", holder:FindFirstChild("FitScale") ~= nil and find(holder, "Panel.PopScale") ~= nil)
 
@@ -72,7 +73,7 @@ runFor(0.5)
 check("G5. ответ пришёл сразу, но барабаны крутятся минимум 0.9 с", screen.isSpinning() and screen.resultLabel.Text == "Крутим…")
 runFor(2)
 local s = reelSymbols(screen)
-check("G5. x10: три семёрки, «ДЖЕКПОТ! +2 500 🪙», кнопка снова активна", s[1] == "7" and s[2] == "7" and s[3] == "7" and screen.resultLabel.Text == "💥 ДЖЕКПОТ! +2 500 🪙" and not screen.isSpinning() and screen.spinButton.isEnabled())
+check("G5. x10: три семёрки, «Джекпот! +2 500 🪙», кнопка снова активна", s[1] == "7" and s[2] == "7" and s[3] == "7" and screen.resultLabel.Text == "Джекпот! +2 500 🪙" and not screen.isSpinning() and screen.spinButton.isEnabled())
 check("G5. окно после ставки остаётся открытым (можно крутить ещё)", screen.isOpen())
 
 -- x2 и проигрыш (несколько раз, т.к. символы случайные)
@@ -80,13 +81,13 @@ local x2ok, lossOk = true, true
 for k = 1, 25 do
 	screen.spinButton.face.Activated:Fire(); ev.OnClientEvent:Fire({ ok = true, bet = 100, multiplier = 2, win = 200 }); runFor(2)
 	s = reelSymbols(screen)
-	if not (s[1] == s[2] and s[2] == s[3] and s[1] ~= "7" and screen.resultLabel.Text == "x2! +200 🪙") then x2ok = false end
+	if not (s[1] == s[2] and s[2] == s[3] and s[1] ~= "7" and screen.resultLabel.Text == "x2  +200 🪙") then x2ok = false end
 	screen.spinButton.face.Activated:Fire(); ev.OnClientEvent:Fire({ ok = true, bet = 100, multiplier = 0, win = 0 }); runFor(2)
 	s = reelSymbols(screen)
-	if (s[1] == s[2] and s[2] == s[3]) or screen.resultLabel.Text ~= "Мимо… −100 🪙" then lossOk = false end
+	if (s[1] == s[2] and s[2] == s[3]) or screen.resultLabel.Text ~= "Мимо  −100 🪙" then lossOk = false end
 end
-check("G6. x2: три одинаковых символа (не семёрки), «x2! +200 🪙» (25 прогонов)", x2ok)
-check("G6. проигрыш: символы НЕ все одинаковые, «Мимо… −100 🪙» (25 прогонов)", lossOk)
+check("G6. x2: три одинаковых символа (не семёрки), «x2  +200 🪙» (25 прогонов)", x2ok)
+check("G6. проигрыш: символы НЕ все одинаковые, «Мимо  −100 🪙» (25 прогонов)", lossOk)
 
 -- отказ сервера и молчание сервера
 screen.spinButton.face.Activated:Fire(); ev.OnClientEvent:Fire({ ok = false, reason = "Не так быстро!" }); runFor(2)
@@ -101,11 +102,11 @@ ev.OnClientEvent:Fire("мусор"); ev.OnClientEvent:Fire(nil)
 check("G7. мусор в ответе не ломает окно", screen.resultLabel.Text == "Сервер не ответил")
 
 -- закрытие
-find(holder, "Panel.CloseButton.Face").Activated:Fire(); runFor(0.3)
+find(holder, "Panel.Header.CloseButton.Face").Activated:Fire(); runFor(0.3)
 check("G8. крестик закрывает окно", holder.Visible == false and not screen.isOpen())
 tool.Activated:Fire(); gui:FindFirstChild("Dim").Activated:Fire(); runFor(0.3)
 check("G8. клик по затемнению закрывает окно", holder.Visible == false)
-tool.Activated:Fire(); find(holder, "Panel.CloseButton.Face").Activated:Fire(); tool.Activated:Fire(); runFor(0.3)
+tool.Activated:Fire(); find(holder, "Panel.Header.CloseButton.Face").Activated:Fire(); tool.Activated:Fire(); runFor(0.3)
 check("G8. быстро закрыли и открыли: окно остаётся открытым (старая анимация закрытия не прячет его)", holder.Visible == true)
 
 -- одно окно на игрока
@@ -152,21 +153,22 @@ for _, tc in ipairs(short) do local got = UI.formatShort(tc[1]); if got ~= tc[2]
 check("U4. formatShort: до миллиона полностью, дальше 1.25M / 12.5M / 125M / 1B / 2.5T, без округления вверх", shortOk)
 check("U4. formatTime: 0:00, 0:05, 1:23, 61:01, отрицательное = 0:00", UI.formatTime(0) == "0:00" and UI.formatTime(5) == "0:05" and UI.formatTime(83) == "1:23" and UI.formatTime(3661) == "61:01" and UI.formatTime(-9) == "0:00")
 
--- toonButton
+-- actionButton
 local clicks = 0
-local tb = UI.toonButton(host, { text = "Жми", color = "green", onClick = function() clicks += 1 end })
+local tb = UI.actionButton(host, { text = "Жми", color = "good", onClick = function() clicks += 1 end })
+local P = UI.THEME.palette
 tb.face.Activated:Fire()
-check("U5. toonButton: текст, клик вызывает обработчик", tb.label.Text == "Жми" and clicks == 1)
+check("U5. actionButton: текст, цвет, клик вызывает обработчик", tb.label.Text == "Жми" and tb.face.BackgroundColor3 == P.good.face and clicks == 1)
+tb.face.MouseEnter:Fire(); check("U5. под курсором подсвечивается", tb.face.BackgroundColor3 == P.good.hover)
+tb.face.MouseButton1Down:Fire(); check("U5. нажатие затемняет", tb.face.BackgroundColor3 == P.good.press)
+tb.face.MouseButton1Up:Fire(); tb.face.MouseLeave:Fire(); check("U5. отпустили и увели курсор: обычный цвет", tb.face.BackgroundColor3 == P.good.face)
 tb.setEnabled(false); tb.face.Activated:Fire()
-check("U5. выключенная кнопка не вызывает обработчик и становится серой", clicks == 1 and tb.shadow.BackgroundColor3 == UI.THEME.palette.grey.shade)
-tb.setColor("red")
-check("U5. setColor на выключенной кнопке не перекрашивает (остаётся серой)…", tb.shadow.BackgroundColor3 == UI.THEME.palette.grey.shade)
+check("U5. выключенная кнопка не вызывает обработчик, серая, текст приглушён", clicks == 1 and tb.getColor() == "neutral" and tb.face.BackgroundColor3 == P.neutral.face and tb.label.TextColor3 == UI.THEME.muted)
+tb.setColor("bad")
+check("U5. setColor на выключенной кнопке не перекрашивает…", tb.getColor() == "neutral")
 tb.setEnabled(true)
-check("U5. …а после включения кнопка красная", tb.shadow.BackgroundColor3 == UI.THEME.palette.red.shade)
-tb.face.MouseButton1Down:Fire(); runFor(0.1)
-check("U5. нажатие опускает кнопку на тень", tb.face.Position[4] == UI.THEME.depth - 1)
-tb.face.MouseButton1Up:Fire(); runFor(0.2)
-check("U5. отпускание возвращает", tb.face.Position[4] == 0)
+check("U5. …а после включения кнопка красная", tb.getColor() == "bad" and tb.face.BackgroundColor3 == P.bad.face)
+check("U5. старое имя toonButton работает", UI.toonButton == UI.actionButton)
 
 -- окна: одно за раз, open/toggle по имени
 resetWorld()

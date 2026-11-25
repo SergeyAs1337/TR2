@@ -1,5 +1,5 @@
 do
-print("--- H/K. CoinsHud v2 и CoinPopups v2")
+print("--- H/K. CoinsHud v3 и CoinPopups v3")
 local oldEnum = Enum
 Enum = setmetatable({}, {__index = function(_, a) return setmetatable({}, {__index = function(_, b) return a .. "." .. b end}) end})
 local origWait = methods.WaitForChild
@@ -41,7 +41,7 @@ local coinsValue = frame:FindFirstChild("Coins"):FindFirstChild("Value")
 local deathsValue = frame:FindFirstChild("Deaths"):FindFirstChild("Value")
 check("H1. HUD создан кодом, не пересоздаётся при респавне, подстраивается под экран", gui ~= nil and gui.ResetOnSpawn == false and frame:FindFirstChild("FitScale") ~= nil)
 check("H1. слева посередине: якорь (0, 0.5)", frame.AnchorPoint[1] == 0 and frame.AnchorPoint[2] == 0.5 and frame.Position[3] == 0.5)
-check("H1. плашки монет и смертей, кнопка «⬆ Апгрейды»", coinsValue ~= nil and deathsValue ~= nil and frame:FindFirstChild("UpgradesButton"):FindFirstChild("Face"):FindFirstChild("Label").Text == "⬆ Апгрейды")
+check("H1. плашки монет и смертей, кнопка «⬆ Апгрейды»", coinsValue ~= nil and deathsValue ~= nil and frame:FindFirstChild("UpgradesButton"):FindFirstChild("Face"):FindFirstChild("Label").Text == "⬆  Апгрейды")
 runFor(0.5)
 check("H2. стартовые значения: монеты «1.23M», смерти «42»", coinsValue.Text == "1.23M" and deathsValue.Text == "42")
 coins.Value = 50
@@ -93,19 +93,19 @@ cn.Value = 350
 local ps = popupsOf(pg)
 check("K2. ПЕРВОЕ же изменение монет показывает всплывашку", #ps == 1)
 local pop = ps[1]
-check("K2. «+250 🪙» жёлтым с контуром, звук сыгран", pop.Text == "+250 🪙" and pop.TextColor3 == sharedUI.THEME.palette.yellow.top and pop:FindFirstChildOfClass("UIStroke") ~= nil and snd.PlayCount == 1)
+check("K2. «+250 🪙» цвета монет с контуром, звук сыгран", pop.Text == "+250 🪙" and pop.TextColor3 == sharedUI.THEME.coin and pop:FindFirstChildOfClass("UIStroke") ~= nil and snd.PlayCount == 1)
 check("K2. старт возле (0.5, 0.7) с разбросом по X ±100 и Y ±50", pop.Position[1] == 0.5 and pop.Position[3] == 0.7 and math.abs(pop.Position[2]) <= 100 and math.abs(pop.Position[4]) <= 50)
-check("K2. «выпрыгивает»: стартовый масштаб 0.3", pop:FindFirstChildOfClass("UIScale").Scale == 0.3)
+check("K2. появляется с анимацией: стартовый масштаб 0.6", pop:FindFirstChildOfClass("UIScale").Scale == 0.6)
 runFor(0.5); check("K3. через 0.5 с всплывашка ещё видна", #popupsOf(pg) == 1)
 runFor(0.6); check("K3. через 1.1 с удалена", #popupsOf(pg) == 0)
 cn.Value = 250
 pop = popupsOf(pg)[1]
-check("K4. «−100 🪙» красным", pop.Text == "−100 🪙" and pop.TextColor3 == sharedUI.THEME.palette.red.top)
+check("K4. «−100 🪙» красным", pop.Text == "−100 🪙" and pop.TextColor3 == sharedUI.THEME.palette.bad.hover)
 runFor(1.1)
 cn.Value = 250
 check("K4. то же значение всплывашку не рисует", #popupsOf(pg) == 0)
 cn.Value = 1250250; pop = popupsOf(pg)[1]
-check("K4. крупная сумма с разделителями и крупнее: «+1 250 000 🪙», размер 40", pop.Text == "+1 250 000 🪙" and pop.TextSize == 40); runFor(1.1)
+check("K4. крупная сумма с разделителями и крупнее: «+1 250 000 🪙», размер 30", pop.Text == "+1 250 000 🪙" and pop.TextSize == 30); runFor(1.1)
 
 for i = 1, 30 do cn.Value = cn.Value + i end
 check(("K5. шквал из 30 изменений: одновременно не больше 12 (сейчас %d)"):format(#popupsOf(pg)), #popupsOf(pg) == 12)

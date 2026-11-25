@@ -1,3 +1,10 @@
+-- ServerScriptService/achivki  (Script)  v2 — бейджи и монеты за количество смертей
+-- Что исправлено:
+--  * раньше на КАЖДУЮ смерть проверялись все бейджи (до 6 запросов к Roblox): лимиты BadgeService
+--    кончались. Теперь каждый бейдж проверяется один раз за сессию;
+--  * две смерти подряд могли выдать монеты за один бейдж дважды (проверки шли параллельно).
+--    Теперь одна проверка на игрока за раз;
+--  * не зависает, если leaderstats так и не появились.
 local BadgeService = game:GetService("BadgeService")
 local Players = game:GetService("Players")
 
@@ -11,64 +18,78 @@ local DeathAchievements = {
 	[1000000] = {badgeId = 2019746548973271, reward = 100000},
 }
 
--- Выдача бейджа (только если нет)
+local checked = {} -- checked[player][порог] = true: уже есть / уже выдан / выдавать не нужно
+local busy = {}
+
+-- Выдать бейдж, если его ещё нет. Возвращает true, если выдали сейчас.
 local function awardBadgeOnce(player, badgeId)
-	local success, hasBadge = pcall(function()
-		return BadgeService:UserHasBadgeAsync(player.UserId, badgeId)
-	end)
-
-	if success and not hasBadge then
-		local ok = pcall(function()
-			BadgeService:AwardBadge(player.UserId, badgeId)
-		end)
-
-		if ok then
-			print("🎖️ Выдан бейдж " .. badgeId .. " игроку " .. player.Name)
-			return true
-		end
+	local ok, hasBadge = pcall(BadgeService.UserHasBadgeAsync, BadgeService, player.UserId, badgeId)
+	if not ok then
+		return false, false -- не узнали: попробуем при следующей смерти
 	end
-	return false
+	if hasBadge then
+		return false, true
+	end
+	local awardOk, result = pcall(BadgeService.AwardBadge, BadgeService, player.UserId, badgeId)
+	local awarded = awardOk and result ~= false
+	return awarded, awarded
 end
 
--- Проверка достижения по смертям
-local function tryAwardDeathAchievement(player, amount)
-	local data = DeathAchievements[amount]
-	if not data then return end
-
-	if awardBadgeOnce(player, data.badgeId) then
-		local stats = player:FindFirstChild("leaderstats")
-		if stats and stats:FindFirstChild("Coins") then
-			stats.Coins.Value += data.reward
-			print("💰 +" .. data.reward .. " монет за " .. amount .. " смертей")
-		end
-	end
-end
-
--- Проверка всех достижений
 local function checkAchievements(player)
+	if busy[player] then
+		busy[player] = "again" -- проверим ещё раз, когда закончится текущая
+		return
+	end
 	local stats = player:FindFirstChild("leaderstats")
-	if not stats then return end
+	local deaths = stats and stats:FindFirstChild("Deaths")
+	if not deaths then
+		return
+	end
+	busy[player] = true
+	local done = checked[player]
+	if not done then
+		done = {}
+		checked[player] = done
+	end
 
-	local deaths = stats:FindFirstChild("Deaths")
-	if deaths then
-		for amount in pairs(DeathAchievements) do
-			if deaths.Value >= amount then
-				tryAwardDeathAchievement(player, amount)
+	for amount, data in DeathAchievements do
+		if not player.Parent then
+			break
+		end
+		if deaths.Value >= amount and not done[amount] then
+			local awardedNow, settled = awardBadgeOnce(player, data.badgeId)
+			if settled then
+				done[amount] = true
+			end
+			if awardedNow then
+				local coins = stats:FindFirstChild("Coins")
+				if coins then
+					coins.Value += data.reward
+				end
 			end
 		end
 	end
+
+	local again = busy[player] == "again"
+	busy[player] = nil
+	if again and player.Parent then
+		checkAchievements(player)
+	end
 end
 
--- Игрок зашёл
 Players.PlayerAdded:Connect(function(player)
-	player:WaitForChild("leaderstats")
-	local deaths = player.leaderstats:FindFirstChild("Deaths")
-
-	if deaths then
-		deaths:GetPropertyChangedSignal("Value"):Connect(function()
-			checkAchievements(player)
-		end)
+	local leaderstats = player:WaitForChild("leaderstats", 120)
+	local deaths = leaderstats and leaderstats:WaitForChild("Deaths", 30)
+	if not deaths then
+		return
 	end
-
+	deaths:GetPropertyChangedSignal("Value"):Connect(function()
+		checkAchievements(player)
+	end)
 	checkAchievements(player)
+end)
+
+Players.PlayerRemoving:Connect(function(player)
+	checked[player] = nil
+	busy[player] = nil
 end)

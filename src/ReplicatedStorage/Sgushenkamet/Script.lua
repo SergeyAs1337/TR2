@@ -1,3 +1,5 @@
+-- ReplicatedStorage/Sgushenkamet/Script  v2: проверка точки и что оружие в руках у стреляющего,
+-- кулдаун ставится до создания ракеты, один взрыв на ракету.
 --[[  ----- Настройка -----  ]]
 local RS              = game:GetService("ReplicatedStorage")
 local Debris          = game:GetService("Debris")
@@ -13,26 +15,38 @@ local fireEvent  = tool:WaitForChild("FireBazooka")            -- RemoteEvent
 local cooldowns  = {}                                          -- { player = true }
 
 --[[  ----- Логика выстрела -----  ]]
+local function validTarget(v)
+	return typeof(v) == "Vector3" and v.X == v.X and v.Y == v.Y and v.Z == v.Z
+		and math.abs(v.X) < 1e6 and math.abs(v.Y) < 1e6 and math.abs(v.Z) < 1e6
+end
+
 fireEvent.OnServerEvent:Connect(function(player, targetPosition)
 	-- Анти-спам
 	if cooldowns[player] then return end
 
-	-- Проверяем персонажа
+	-- Стрелять можно только из своего сгущёнкомёта в руках и в настоящую точку.
+	-- Раньше неверная точка роняла скрипт уже ПОСЛЕ списания банки и кулдаун залипал навсегда.
 	local character = player.Character
 	if not (character and character:FindFirstChild("Head")) then return end
+	if tool.Parent ~= character then return end
+	if not validTarget(targetPosition) then return end
+	local offset = targetPosition - character.Head.Position
+	if offset.Magnitude < 1 then return end
 
 	-- Проверяем, есть ли сгущёнка
 	local backpack  = player:FindFirstChild("Backpack")
 	local sgushenka = (backpack and backpack:FindFirstChild("Sgushenka")) or character:FindFirstChild("Sgushenka")
 	if not sgushenka then
-		warn(player.Name .. " попытался выстрелить без сгущёнки!")
 		return
 	end
 	sgushenka:Destroy()               -- расходуем банку
 	cooldowns[player] = true          -- ставим кулдаун
+	task.delay(cooldownTime, function()
+		cooldowns[player] = nil
+	end)
 
 	-- Направление и позиция старта
-	local direction = (targetPosition - character.Head.Position).Unit
+	local direction = offset.Unit
 	local spawnPos  = character.Head.Position + direction * 5  -- на 5 юнитов впереди головы
 
 	-- Создаём ракету
@@ -57,9 +71,12 @@ fireEvent.OnServerEvent:Connect(function(player, targetPosition)
 	bv.Parent       = rocket
 
 	-- Обработчик столкновения
+	local exploded = false
 	rocket.Touched:Connect(function(hit)
+		if exploded then return end                             -- один взрыв на ракету
 		if hit:IsDescendantOf(character) then return end        -- не взрываем владельца
 		if not rocket.Parent then return end                   -- уже уничтожена?
+		exploded = true
 
 		-- 1) Звук взрыва из невидимого Part'а
 		local soundPart       = Instance.new("Part")
@@ -90,8 +107,8 @@ fireEvent.OnServerEvent:Connect(function(player, targetPosition)
 	-- Безопасное авто-удаление ракеты (если ни с кем не столкнулась)
 	Debris:AddItem(rocket, 5)
 
-	-- Сброс кулдауна
-	task.delay(cooldownTime, function()
-		cooldowns[player] = nil
-	end)
+end)
+
+game:GetService("Players").PlayerRemoving:Connect(function(player)
+	cooldowns[player] = nil
 end)

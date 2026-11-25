@@ -1,75 +1,63 @@
+-- ReplicatedStorage/Dialogues/ice_cream  (ModuleScript)  v2
+-- Мороженое у V4Ska. Reward у «Да» возвращает следующий шаг: "bought" или "not_enough"
+-- (движок dialogsquests v2 поддерживает это), поэтому больше не нужен пустой шаг с «…».
+
+local PRICE = 15
+local ITEM_NAME = "IceCream" -- инструмент в ReplicatedStorage
+
+local function buy(player)
+	local stats = player:FindFirstChild("leaderstats")
+	local coins = stats and stats:FindFirstChild("Coins")
+	local backpack = player:FindFirstChildOfClass("Backpack")
+	local item = game:GetService("ReplicatedStorage"):FindFirstChild(ITEM_NAME)
+	if not coins or not backpack or not item then
+		return "broken"
+	end
+	if coins.Value < PRICE then
+		return "not_enough"
+	end
+	-- проверка и списание без yield: дважды купить на одни монеты нельзя
+	coins.Value -= PRICE
+	item:Clone().Parent = backpack
+	return "bought"
+end
+
 return {
 	ID = "ice_cream",
 	Name = "V4Ska",
+	Npc = "6V4Ska9", -- модель NPC в Workspace: говорить можно только рядом с ним
 	OneTime = false,
 
 	Steps = {
-		["start"] = {
+		start = {
 			Lines = {
-				"Привет привет!",
-				"Хочешь мороженного? Всего 15 монет!"
+				"Привет-привет!",
+				"Хочешь мороженого? Всего " .. PRICE .. " монет!",
 			},
 			Options = {
-				{
-					Text = "Да, с радостью!",
-					Next = "try_buy"
-				},
-				{
-					Text = "Нет, не хочу",
-					Next = "decline"
-				}
-			}
+				{ Text = "Да, с радостью! (" .. PRICE .. " 🪙)", Reward = buy },
+				{ Text = "Нет, не хочу", Next = "decline" },
+			},
 		},
 
-		["try_buy"] = {
-			Text = "", -- текст будет проигнорирован, используется Reward-функция для логики
-			Options = {
-				{
-					Text = "…", -- автоматически переходит на buy или not_enough
-					Reward = function(player)
-						local coins = player:FindFirstChild("leaderstats") and player.leaderstats:FindFirstChild("Coins")
-						if coins and coins.Value >= 15 then
-							coins.Value -= 15
-
-							local replicatedStorage = game:GetService("ReplicatedStorage")
-							local iceCream = replicatedStorage:FindFirstChild("IceCream")
-							if iceCream then
-								local clone = iceCream:Clone()
-								clone.Parent = player:FindFirstChild("Backpack") or player
-							end
-
-							-- Установим шаг вручную
-							local event = game.ReplicatedStorage:WaitForChild("DialogueSystem"):WaitForChild("StartDialogue")
-							event:FireClient(player, "ice_cream", {
-								Text = "Держи мороженое! Приятного аппетита!",
-								Options = {
-									{ Text = "Спасибо!" }
-								},
-								Name = "V4Ska"
-							})
-						else
-							local event = game.ReplicatedStorage:WaitForChild("DialogueSystem"):WaitForChild("StartDialogue")
-							event:FireClient(player, "ice_cream", {
-								Text = "Ой, у тебя не хватает монет!",
-								Options = {
-									{ Text = "Жаль..." }
-								},
-								Name = "V4Ska"
-							})
-						end
-					end
-				}
-			}
+		bought = {
+			Text = "Держи мороженое! Приятного аппетита!",
+			Options = { { Text = "Спасибо!" } },
 		},
 
-		["decline"] = {
+		not_enough = {
+			Text = "Ой, у тебя не хватает монет!",
+			Options = { { Text = "Жаль…" } },
+		},
+
+		broken = {
+			Text = "Ой, мороженое закончилось. Загляни попозже!",
+			Options = { { Text = "Ладно" } },
+		},
+
+		decline = {
 			Text = "Ну ладно, если передумаешь — подходи!",
-			Options = {
-				{
-					Text = "Окей!",
-					Next = nil
-				}
-			}
-		}
-	}
+			Options = { { Text = "Окей!" } },
+		},
+	},
 }

@@ -1,5 +1,5 @@
--- ReplicatedStorage/GambleScreen  (ModuleScript, только для клиента)  v2 — редизайн
--- Окно однорукого бандита в мультяшном стиле: три барабана, быстрые ставки, баланс,
+-- ReplicatedStorage/GambleScreen  (ModuleScript, только для клиента)  v3 — стиль админ-панели
+-- Окно однорукого бандита: три барабана, быстрые ставки, баланс,
 -- результат с сервера и счётчик «Проиграно всеми».
 --
 -- Как работает ставка: клиент проверяет ввод и шлёт ставку в GambleEvent, барабаны начинают
@@ -25,8 +25,6 @@ local REEL_STOP_GAP = 0.35 -- пауза между остановками ба�
 local SPIN_FRAME = 0.06 -- как часто меняется символ на крутящемся барабане
 local REPLY_TIMEOUT = 5 -- если сервер не ответил, барабаны останавливаются
 
-local REEL_FACE = Color3.fromRGB(255, 255, 255)
-local REEL_PANEL = Color3.fromRGB(56, 34, 86)
 
 local GambleScreen = {}
 local controller = nil -- окно одно на игрока
@@ -73,9 +71,8 @@ local function build(player)
 	local win = UILib.window({
 		name = "Gamble",
 		guiName = "GambleUI",
-		title = "🎰 ОДНОРУКИЙ БАНДИТ",
-		accent = "purple",
-		size = Vector2.new(480, 430),
+		title = "🎰 Однорукий бандит",
+		size = Vector2.new(440, 420),
 		player = player,
 		onOpen = function()
 			screen.refresh()
@@ -84,41 +81,28 @@ local function build(player)
 	local body = win.body
 
 	-- ===== Барабаны =====
-	local reelPanel = UILib.make("Frame", {
+	local reelPanel = UILib.panel(body, {
 		Name = "Reels",
-		Position = UDim2.new(0, 0, 0, 0),
-		Size = UDim2.new(1, 0, 0, 130),
-		BackgroundColor3 = REEL_PANEL,
-		BorderSizePixel = 0,
-	}, body)
-	UILib.corner(reelPanel, THEME.radius)
-	UILib.stroke(reelPanel, THEME.stroke)
-
-	-- Стрелки линии выигрыша
-	UILib.text(reelPanel, "▶", { Name = "ArrowLeft", Size = UDim2.new(0, 20, 1, 0), Position = UDim2.new(0, 2, 0, 0), TextColor3 = UILib.palette("yellow").face, TextSize = 22 })
-	UILib.text(reelPanel, "◀", { Name = "ArrowRight", Size = UDim2.new(0, 20, 1, 0), Position = UDim2.new(1, -22, 0, 0), TextColor3 = UILib.palette("yellow").face, TextSize = 22 })
+		Size = UDim2.new(1, 0, 0, 110),
+	})
 
 	local reels = {}
 	for i = 1, 3 do
-		local slot = UILib.make("Frame", {
+		local slot = UILib.panel(reelPanel, {
 			Name = "Reel" .. i,
 			AnchorPoint = Vector2.new(0.5, 0.5),
-			Position = UDim2.new(0.2 + (i - 1) * 0.3, 0, 0.5, 0),
-			Size = UDim2.new(0.26, 0, 1, -24),
-			BackgroundColor3 = REEL_FACE,
-			BorderSizePixel = 0,
+			Position = UDim2.new(0.5 + (i - 2) * 0.32, 0, 0.5, 0),
+			Size = UDim2.new(0.29, 0, 1, -24),
+			BackgroundColor3 = THEME.row,
 			ClipsDescendants = true,
-		}, reelPanel)
-		UILib.corner(slot, THEME.radius - 4)
-		UILib.stroke(slot, THEME.stroke)
-		UILib.gradient(slot, Color3.fromRGB(255, 255, 255), Color3.fromRGB(226, 214, 240))
+		})
 		local slotScale = UILib.make("UIScale", { Scale = 1 }, slot)
 
 		local image = UILib.make("ImageLabel", {
 			Name = "Seven",
 			AnchorPoint = Vector2.new(0.5, 0.5),
 			Position = UDim2.new(0.5, 0, 0.5, 0),
-			Size = UDim2.new(0.8, 0, 0.8, 0),
+			Size = UDim2.new(0.75, 0, 0.75, 0),
 			BackgroundTransparency = 1,
 			Image = SEVEN_IMAGE,
 			ScaleType = Enum.ScaleType.Fit,
@@ -128,8 +112,7 @@ local function build(player)
 			AnchorPoint = Vector2.new(0.5, 0.5),
 			Position = UDim2.new(0.5, 0, 0.5, 0),
 			Size = UDim2.new(1, 0, 1, 0),
-			TextSize = 56,
-			strokeThickness = 0,
+			TextSize = 44,
 		})
 
 		local reel = { slot = slot, image = image, emoji = emoji, scale = slotScale, symbol = "7" }
@@ -143,45 +126,42 @@ local function build(player)
 	end
 
 	-- ===== Результат =====
-	local resultLabel = UILib.text(body, "Ставь и крути!", {
+	local resultLabel = UILib.text(body, "Сделай ставку", {
 		Name = "Result",
-		Position = UDim2.new(0, 0, 0, 136),
-		Size = UDim2.new(1, 0, 0, 36),
-		TextSize = 26,
-		strokeThickness = 3,
+		Position = UDim2.new(0, 0, 0, 116),
+		Size = UDim2.new(1, 0, 0, 30),
+		TextSize = 20,
 	})
 	local resultScale = UILib.make("UIScale", { Scale = 1 }, resultLabel)
 
 	-- ===== Ставка =====
 	local betRow = UILib.make("Frame", {
 		Name = "BetRow",
-		Position = UDim2.new(0, 0, 0, 178),
-		Size = UDim2.new(1, 0, 0, 46),
+		Position = UDim2.new(0, 0, 0, 152),
+		Size = UDim2.new(1, 0, 0, 40),
 		BackgroundTransparency = 1,
 	}, body)
 
-	local betFrame = UILib.make("Frame", {
+	local betFrame = UILib.panel(betRow, {
 		Name = "BetFrame",
-		Size = UDim2.new(0.42, 0, 1, 0),
-		BackgroundColor3 = THEME.white,
-		BorderSizePixel = 0,
-	}, betRow)
-	UILib.corner(betFrame, THEME.radius - 2)
-	local betStroke = UILib.stroke(betFrame, THEME.stroke)
-	UILib.text(betFrame, "🪙", { Name = "Icon", Size = UDim2.new(0, 36, 1, 0), TextSize = 22, strokeThickness = 0 })
+		Size = UDim2.new(0.4, 0, 1, 0),
+		BackgroundColor3 = THEME.row,
+	})
+	local betStroke = UILib.stroke(betFrame, 1, THEME.row)
+	UILib.text(betFrame, "🪙", { Name = "Icon", Size = UDim2.new(0, 32, 1, 0), TextSize = 18 })
 
 	local betBox = UILib.make("TextBox", {
 		Name = "BetBox",
-		Position = UDim2.new(0, 36, 0, 0),
-		Size = UDim2.new(1, -44, 1, 0),
+		Position = UDim2.new(0, 32, 0, 0),
+		Size = UDim2.new(1, -40, 1, 0),
 		BackgroundTransparency = 1,
 		BorderSizePixel = 0,
 		Text = tostring(DEFAULT_BET),
 		PlaceholderText = "Ставка",
 		PlaceholderColor3 = THEME.muted,
 		ClearTextOnFocus = false,
-		TextColor3 = THEME.ink,
-		TextSize = 22,
+		TextColor3 = THEME.text,
+		TextSize = 18,
 		Font = THEME.font,
 		TextXAlignment = Enum.TextXAlignment.Left,
 	}, betFrame)
@@ -204,16 +184,16 @@ local function build(player)
 		{ "½", function(v) return math.max(1, (v or DEFAULT_BET) // 2) end },
 		{ "x2", function(v) return (v or DEFAULT_BET) * 2 end },
 		{ "+1К", function(v) return (v or 0) + 1000 end },
-		{ "ВСЁ", function() return math.max(1, coinsValue() or DEFAULT_BET) end },
+		{ "Всё", function() return math.max(1, coinsValue() or DEFAULT_BET) end },
 	}
 	for index, chip in chips do
-		UILib.toonButton(betRow, {
+		UILib.actionButton(betRow, {
 			name = "Chip" .. index,
 			text = chip[1],
-			color = index == 4 and "red" or "yellow",
-			size = UDim2.new(0.13, 0, 1, 0),
-			position = UDim2.new(0.45 + (index - 1) * 0.1375, 0, 0, 0),
-			textSize = 18,
+			color = index == 4 and "bad" or "neutral",
+			size = UDim2.new(0.135, 0, 1, 0),
+			position = UDim2.new(0.43 + (index - 1) * 0.1425, 0, 0, 0),
+			textSize = 15,
 			onClick = function()
 				local value = currentBet()
 				if value and value ~= value then
@@ -226,34 +206,31 @@ local function build(player)
 
 	local balanceLabel = UILib.text(body, "", {
 		Name = "Balance",
-		Position = UDim2.new(0, 0, 0, 228),
-		Size = UDim2.new(1, 0, 0, 22),
+		Position = UDim2.new(0, 0, 0, 198),
+		Size = UDim2.new(1, 0, 0, 20),
 		TextColor3 = THEME.muted,
-		TextSize = 16,
+		TextSize = 14,
 		Font = THEME.fontBody,
-		strokeThickness = 0,
 	})
 
 	-- ===== Кнопка «Крутить» =====
-	local spinButton = UILib.toonButton(body, {
+	local spinButton = UILib.actionButton(body, {
 		name = "SpinButton",
-		text = "КРУТИТЬ!",
-		color = "green",
-		anchor = Vector2.new(0.5, 0),
-		position = UDim2.new(0.5, 0, 0, 256),
-		size = UDim2.new(0.7, 0, 0, 66),
-		textSize = 32,
+		text = "Крутить",
+		color = "accent",
+		position = UDim2.new(0, 0, 0, 226),
+		size = UDim2.new(1, 0, 0, 48),
+		textSize = 20,
 	})
 
 	local lostLabel = UILib.text(body, "", {
 		Name = "TotalLostLabel",
 		AnchorPoint = Vector2.new(0, 1),
 		Position = UDim2.new(0, 0, 1, 0),
-		Size = UDim2.new(1, 0, 0, 22),
+		Size = UDim2.new(1, 0, 0, 20),
 		TextColor3 = THEME.muted,
-		TextSize = 15,
+		TextSize = 13,
 		Font = THEME.fontBody,
-		strokeThickness = 0,
 	})
 
 	screen = { gui = win.gui, frame = win.holder, window = win, reels = reels }
@@ -263,8 +240,8 @@ local function build(player)
 
 	local function setResult(text, color, big)
 		resultLabel.Text = text
-		resultLabel.TextColor3 = color or THEME.white
-		UILib.bump(resultScale, big and 1.4 or 1.15)
+		resultLabel.TextColor3 = color or THEME.text
+		UILib.bump(resultScale, big and 1.2 or 1.06)
 	end
 
 	function screen.refresh()
@@ -305,11 +282,11 @@ local function build(player)
 	end
 
 	local function flashInvalid(message)
-		betStroke.Color = UILib.palette("red").face
+		betStroke.Color = UILib.palette("bad").face
 		UILib.shake(betFrame)
-		setResult(message, UILib.palette("red").top)
+		setResult(message, UILib.palette("bad").hover)
 		task.delay(0.6, function()
-			betStroke.Color = THEME.ink
+			betStroke.Color = THEME.row
 		end)
 	end
 
@@ -329,7 +306,7 @@ local function build(player)
 				end
 				reel.stopped = true
 				reel.set(symbols[i])
-				UILib.bump(reel.scale, 1.12)
+				UILib.bump(reel.scale, 1.08)
 			end)
 		end
 
@@ -339,16 +316,16 @@ local function build(player)
 			end
 			spinning = false
 			spinButton.setEnabled(true)
-			spinButton.setText("КРУТИТЬ!")
+			spinButton.setText("Крутить")
 			if not result.ok then
-				setResult(result.reason or "Ставка не прошла", UILib.palette("red").top)
+				setResult(result.reason or "Ставка не прошла", UILib.palette("bad").hover)
 			elseif (result.multiplier or 0) >= 10 then
-				setResult("💥 ДЖЕКПОТ! +" .. UILib.formatNumber(result.win) .. " 🪙", UILib.palette("yellow").top, true)
+				setResult("Джекпот! +" .. UILib.formatNumber(result.win) .. " 🪙", UILib.palette("warn").hover, true)
 				UILib.shake(win.panel)
 			elseif (result.multiplier or 0) > 0 then
-				setResult("x" .. result.multiplier .. "! +" .. UILib.formatNumber(result.win) .. " 🪙", UILib.palette("green").top, true)
+				setResult("x" .. result.multiplier .. "  +" .. UILib.formatNumber(result.win) .. " 🪙", UILib.palette("good").hover, true)
 			else
-				setResult("Мимо… −" .. UILib.formatNumber(result.bet) .. " 🪙", THEME.white)
+				setResult("Мимо  −" .. UILib.formatNumber(result.bet) .. " 🪙", THEME.muted)
 			end
 		end)
 	end
@@ -361,8 +338,8 @@ local function build(player)
 		local reply = nil
 
 		spinButton.setEnabled(false)
-		spinButton.setText("КРУТИТСЯ…")
-		setResult("Крутим…", THEME.white)
+		spinButton.setText("Крутится…")
+		setResult("Крутим…", THEME.text)
 
 		for _, reel in reels do
 			reel.stopped = false

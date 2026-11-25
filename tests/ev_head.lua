@@ -1,4 +1,7 @@
 -- ===== Макет Roblox: время, корутины =====
+-- os в Luau только для чтения: подменяем таблицей-обёрткой, чтобы тесты могли подставлять os.clock
+local realOs = os
+os = setmetatable({}, {__index = realOs})
 local now = 0; local queue = {}
 local function step(co, ...)
 	local ok, res = coroutine.resume(co, ...)
@@ -9,6 +12,7 @@ local function clearQueue() queue = {} end
 task = {
 	spawn = function(f, ...) local co = coroutine.create(f); step(co, ...); return co end,
 	wait = function(t) coroutine.yield({wake = now + (t or 0.03)}) return t end,
+	defer = function(f, ...) local co = coroutine.create(f); step(co, ...); return co end,
 	delay = function(t, f, ...) local args = {...}; local co = coroutine.create(function() task.wait(t); f(table.unpack(args)) end); step(co) end,
 }
 local function runFor(s)
@@ -79,7 +83,7 @@ end
 Inst_mt.__index = function(t, k)
 	local m = methods[k]; if m then return m end
 	local p = rawget(t, "_p")
-	if (k == "Touched" or k == "MoveToFinished" or k == "CharacterAdded" or k == "Activated" or k == "FocusLost" or k == "MouseEnter" or k == "MouseLeave" or k == "MouseButton1Down" or k == "MouseButton1Up" or k == "OnClientEvent") then if not p[k] then p[k] = Signal() end return p[k] end
+	if (k == "Touched" or k == "MoveToFinished" or k == "CharacterAdded" or k == "Activated" or k == "FocusLost" or k == "MouseEnter" or k == "MouseLeave" or k == "MouseButton1Down" or k == "MouseButton1Up" or k == "OnClientEvent" or k == "Died" or k == "ChildAdded" or k == "CharacterRemoving" or k == "Jumping" or k == "Triggered" or k == "Stopped" or k == "Event") then if not p[k] then p[k] = Signal() end return p[k] end
 	if k == "AssemblyRootPart" then return p.AssemblyRootPart or t end
 	if p[k] ~= nil then return p[k] end
 	return methods.FindFirstChild(t, k)
@@ -107,6 +111,13 @@ function methods.FindFirstChild(self, name, recursive)
 	if recursive then for _, c in ipairs(descendants(self)) do if c.Name == name then return c end end end
 end
 methods.WaitForChild = methods.FindFirstChild
+function methods.FindFirstChildWhichIsA(self, cls) for _, c in ipairs(rawget(self, "_kids")) do if methods.IsA(c, cls) then return c end end end
+function methods.GetPivot(self) local pp = rawget(self, "_p").PrimaryPart; if pp then return pp.CFrame end return self.CFrame end
+function methods.LoadAnimation(self, anim) local tr = {Looped = false, IsPlaying = false, Stopped = nil, AnimationId = anim.AnimationId}; local sig = nil
+	tr.Stopped = (function() local s = {handlers = {}}; function s:Connect(f) table.insert(self.handlers, f); return {Disconnect = function() end} end; function s:Fire() for _, h in ipairs(self.handlers) do h() end end; return s end)()
+	function tr:Play() self.IsPlaying = true end
+	function tr:Stop() if self.IsPlaying then self.IsPlaying = false; self.Stopped:Fire() end end
+	local p = rawget(self, "_p"); p.loaded = p.loaded or {}; table.insert(p.loaded, tr); return tr end
 function methods.FindFirstChildOfClass(self, cls) for _, c in ipairs(rawget(self, "_kids")) do if c.ClassName == cls then return c end end end
 function methods.IsA(self, cls) local c = self.ClassName; return c == cls or cls == "Instance" or (cls == "BasePart" and partClasses[c] == true) end
 function methods.FindFirstAncestorOfClass(self, cls) local p = self.Parent; while p do if p.ClassName == cls then return p end p = p.Parent end end
@@ -238,12 +249,16 @@ local Pathfinding = {CreatePath = function()
 	end
 	function obj:GetWaypoints() return self._wps end
 	return obj end}
-local RunServiceSvc = {IsServer = function() return true end, IsClient = function() return false end}
+local RunServiceSvc = {IsServer = function() return true end, IsClient = function() return false end, IsStudio = function() return false end}
 local heartbeat = Signal(); RunServiceSvc.Heartbeat = heartbeat
 local renderStepped = Signal(); RunServiceSvc.RenderStepped = renderStepped
 local function startHeartbeat() task.spawn(function() while true do heartbeat:Fire(1 / 60); task.wait(1 / 60) end end) end
 local tweenLog = {}
 TweenInfo = {new = function(t) return {Time = t or 1} end}
+local CASvc = {bound = {}, BindAction = function(self, name, fn, touch, ...) self.bound[name] = {fn = fn, keys = {...}} end, UnbindAction = function(self, name) self.bound[name] = nil end}
+local MarketSvc = {owns = {}, prompts = {}, failCheck = false,
+	UserOwnsGamePassAsync = function(self, uid, pass) if self.failCheck then error("market down") end return self.owns[uid] == true end,
+	PromptGamePassPurchase = function(self, plr, pass) table.insert(self.prompts, {plr, pass}) end}
 ColorSequence = {new = function(a, b) return {a, b or a} end}
 -- HttpService: JSON только для плоских объектов {"Имя":число}, этого хватает тестам
 local HttpSvc = {
@@ -266,7 +281,7 @@ end}
 Enum.TextFilterContext = {PublicChat = "PublicChat"}
 game = {PlaceVersion = 42, JobId = "abcdef0123456789", GetService = function(self, n)
 	local t = {TweenService = TweenSvc, UserInputService = UIS, TextService = TextServiceSvc, Players = PlayersSvc, Workspace = Workspace, ReplicatedStorage = ReplicatedStorage, ServerStorage = ServerStorage,
-		ServerScriptService = ServerScriptService, HttpService = HttpSvc, Debris = Debris, PathfindingService = Pathfinding, RunService = RunServiceSvc}
+		ServerScriptService = ServerScriptService, HttpService = HttpSvc, ContextActionService = CASvc, MarketplaceService = MarketSvc, Debris = Debris, PathfindingService = Pathfinding, RunService = RunServiceSvc}
 	return t[n]
 end}
 local EventsModuleInst = newInst("ModuleScript", "EventManager"); EventsModuleInst.Parent = ReplicatedStorage
@@ -329,4 +344,18 @@ local function resetWorld()
 	local rain = mkPart("RainFall", v3(0, 100, 0), true); rain.Parent = ramki
 	local em = newInst("ParticleEmitter"); em.Enabled = false; em.Parent = rain
 end
+-- typeof как в Roblox: макетные объекты — Instance / Vector3 / CFrame, а не table
+local realTypeof = typeof
+typeof = function(v)
+	if type(v) == "table" then
+		local mt = getmetatable(v)
+		if mt == Inst_mt then return "Instance" end
+		if mt == V3 then return "Vector3" end
+		if mt == CF then return "CFrame" end
+	end
+	return realTypeof(v)
+end
+UIS.InputBegan = Signal()
+MarketSvc.PromptGamePassPurchaseFinished = Signal()
+CFrame.lookAt = function(a, b) return CFrame.new(a) end
 local function check(n, c) print((c and "PASS " or "FAIL ") .. n) end
