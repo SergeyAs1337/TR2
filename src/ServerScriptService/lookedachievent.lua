@@ -4,7 +4,20 @@ local BadgeService = game:GetService("BadgeService")
 local remote = ReplicatedStorage:WaitForChild("AwardBadge")
 local BADGE_ID = 2698462963901961 -- Замени на реальный ID
 
+-- v2: не больше одной проверки на игрока за сессию (раньше событие можно было спамить,
+-- и каждый вызов шёл запросом к BadgeService). Бейдж выдаётся по сигналу клиента
+-- (чёрная фигура видна только ему), поэтому защититься от читера полностью нельзя —
+-- но это только бейдж, без монет.
+local handled = {}
+game:GetService("Players").PlayerRemoving:Connect(function(player)
+	handled[player] = nil
+end)
+
 remote.OnServerEvent:Connect(function(player)
+	if handled[player] then
+		return
+	end
+	handled[player] = true
 	local success, hasBadge = pcall(function()
 		return BadgeService:UserHasBadgeAsync(player.UserId, BADGE_ID)
 	end)

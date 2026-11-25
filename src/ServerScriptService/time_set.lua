@@ -21,12 +21,14 @@ end
 
 -- Плавный переход между временами суток
 local function smoothTransition(startTime, endTime, duration)
-	local steps = duration / 0.01
+	-- v2: шаг 0.1 с (раньше шагов было в 10 раз больше, и переход шёл 50 с вместо 5)
+	local step = 0.1
+	local steps = math.max(1, math.floor(duration / step))
 	local delta = (endTime - startTime) / steps
 
 	for i = 1, steps do
 		Lighting.ClockTime = (Lighting.ClockTime + delta) % 24
-		task.wait(0.1)
+		task.wait(step)
 	end
 
 	Lighting.ClockTime = endTime % 24

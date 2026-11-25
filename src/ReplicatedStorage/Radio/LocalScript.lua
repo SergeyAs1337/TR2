@@ -1,43 +1,28 @@
--- RadioTool → LocalScript
--- Печатает каждый шаг, чтобы сразу видеть, где цепочка рвётся.
+-- ReplicatedStorage/Radio/LocalScript  (LocalScript в инструменте)  v2
+-- Клик инструментом ставит радио туда, куда смотрит курсор (на телефоне — куда коснулся).
+-- Проверки (расстояние, одно радио на игрока) делает сервер (RadioHandler v2).
+-- Убран отладочный вывод в консоль на каждый клик.
 
-local player            = game.Players.LocalPlayer
-local tool              = script.Parent
-local rs                = game:GetService("ReplicatedStorage")
-local placeRadio        = rs:WaitForChild("PlaceRadio")
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local CAN_PLACE = true
+local player = Players.LocalPlayer
+local tool = script.Parent
+local placeRadio = ReplicatedStorage:WaitForChild("PlaceRadio")
 
-local function dbg(...)
-	print("[CLIENT]", ...)
-end
+local busy = false
 
 tool.Activated:Connect(function()
-	if not CAN_PLACE then
-		dbg("Нельзя ставить повторно, Tool уничтожен или ещё не подобран.")
+	if busy then
 		return
 	end
-
-	dbg("Tool.Activated ✔")
-
 	local mouse = player:GetMouse()
 	if not mouse or not mouse.Hit then
-		dbg("mouse или mouse.Hit == nil - не удалось получить позицию.")
 		return
 	end
-
-	local pos = mouse.Hit.Position
-	dbg("mouse.Hit →", pos)
-
-	placeRadio:FireServer(pos)
-	dbg("PlaceRadio:FireServer отправлен.")
-
-	-- Ждём полсекунды, чтобы вывод в консоли успел появиться
-	task.wait(0.5)
-end)
-
--- Когда сервер разрешит ставить заново (после Pickup)
-rs:WaitForChild("PickupRadio").OnClientEvent:Connect(function()
-	dbg("Получен сигнал с сервера: можно снова ставить радио.")
-	CAN_PLACE = true
+	busy = true
+	placeRadio:FireServer(mouse.Hit.Position)
+	task.delay(0.5, function()
+		busy = false
+	end)
 end)

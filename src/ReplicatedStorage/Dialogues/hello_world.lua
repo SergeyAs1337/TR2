@@ -1,6 +1,9 @@
+-- ReplicatedStorage/Dialogues/hello_world  (ModuleScript)  v2: убраны пустые награды (+0 монет),
+-- которые падали с ошибкой, пока не загрузились leaderstats.
 return {
 	ID = "hello_world",
 	Name = "Serg20087720",
+	Npc = "Serg20087720", -- модель NPC в Workspace: говорить можно только рядом с ним
 	OneTime = true,
 
 	Steps = {
@@ -21,24 +24,14 @@ return {
 		["accept"] = {
 			Lines = {
 				"Видно что новенький!",
-				"Ты ведь  хочешь заработать?",
+				"Ты ведь хочешь заработать?",
 				"Знаю что хочешь!",
-				"Страховка тут бесплатная и за 'несчастные случии' нам платят",
+				"Страховка тут бесплатная и за «несчастные случаи» нам платят",
 				"Так что можешь идти кидаться под фуру :)"
 			},
 			Options = {
-				{
-					Text = "Спасибо вам!",
-					Reward = function(player)
-						player.leaderstats.Coins.Value += 0
-					end
-				},
-				{
-					Text = "Огромное спасибо!",
-					Reward = function(player)
-						player.leaderstats.Coins.Value += 0
-					end
-				}
+				{ Text = "Спасибо вам!" },
+				{ Text = "Огромное спасибо!" },
 			}
 		},
 

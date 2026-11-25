@@ -3,7 +3,8 @@
 -- Заменяет StarterGui/CoinsDeaths. Строится кодом и подстраивается под размер экрана.
 --   * число монет «докручивается» до нового значения и подпрыгивает при изменении;
 --   * до миллиона число полностью («12 345»), дальше коротко («1.25M»);
---   * кнопка «Апгрейды» открывает окно апгрейдов (UpgradeShop) через UILib.open.
+--   * кнопки «Апгрейды» и «Эмоции» открывают окна UpgradeShop и EmotionMenu через UILib;
+--   * слушает сообщения сервера: Notify (уведомление) и OpenScreen (открыть окно по имени).
 -- Добавить свою кнопку в меню: допиши строку в MENU_BUTTONS (окно должно быть создано
 -- через UILib.window с таким же name).
 
@@ -17,6 +18,7 @@ local FORMAT_NUMBERS = true -- false: «1234567» без разделителе�
 local COUNT_TIME = 0.4 -- секунд «докрутки» числа
 local MENU_BUTTONS = {
 	{ name = "Upgrades", text = "⬆  Апгрейды", color = "accent" },
+	{ name = "Emotes", text = "💃  Эмоции", color = "neutral" },
 }
 
 local player = Players.LocalPlayer
@@ -27,7 +29,7 @@ local holder = UILib.make("Frame", {
 	Name = "Frame",
 	AnchorPoint = Vector2.new(0, 0.5),
 	Position = UDim2.new(0, 14, 0.5, 0),
-	Size = UDim2.new(0, 210, 0, 260),
+	Size = UDim2.new(0, 210, 0, 300),
 	BackgroundTransparency = 1,
 }, gui)
 UILib.fitScale(holder)
@@ -137,6 +139,28 @@ local function watch(statName, pill)
 		set(stat.Value)
 	end)
 end
+
+-- Сообщения с сервера (модуль ServerScriptService/Notify): уведомление и «открыть окно»
+task.spawn(function()
+	local notify = ReplicatedStorage:WaitForChild("Notify", 60)
+	if notify then
+		notify.OnClientEvent:Connect(function(text, color)
+			if typeof(text) == "string" and text ~= "" then
+				UILib.toast(string.sub(text, 1, 200), typeof(color) == "string" and color or "accent")
+			end
+		end)
+	end
+end)
+task.spawn(function()
+	local openScreen = ReplicatedStorage:WaitForChild("OpenScreen", 60)
+	if openScreen then
+		openScreen.OnClientEvent:Connect(function(screenName)
+			if typeof(screenName) == "string" then
+				UILib.open(screenName)
+			end
+		end)
+	end
+end)
 
 -- leaderstats создаётся после загрузки данных игрока, поэтому ждём подольше
 task.spawn(watch, "Coins", coinsPill)
