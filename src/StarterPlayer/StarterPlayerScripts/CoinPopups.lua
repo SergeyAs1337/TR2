@@ -1,6 +1,6 @@
--- StarterPlayer/StarterPlayerScripts/CoinPopups  (LocalScript)  v2 — редизайн
+-- StarterPlayer/StarterPlayerScripts/CoinPopups  (LocalScript)  v3 — стиль админ-панели
 -- Всплывашки «+N 🪙» / «−N 🪙» при изменении Coins. Заменяет StarterGui/CoinPopupGui.
--- Мультяшный стиль: жирные цифры с контуром «выпрыгивают», взлетают и растворяются.
+-- Цифры с тёмным контуром (читаются поверх любого фона) появляются, взлетают и растворяются.
 -- Как и в v1: первое изменение после входа не теряется, одновременно не больше MAX_POPUPS.
 
 local Players = game:GetService("Players")
@@ -13,8 +13,8 @@ local MAX_POPUPS = 12 -- при шквале изменений лишние в�
 local SOUND_ID = "rbxassetid://5613553529"
 local SOUND_VOLUME = 0.5
 local FLY_TIME = 1 -- секунд полёта вверх и исчезновения
-local GAIN_COLOR = UILib.palette("yellow").top
-local LOSS_COLOR = UILib.palette("red").top
+local GAIN_COLOR = UILib.THEME.coin
+local LOSS_COLOR = UILib.palette("bad").hover
 local BIG_GAIN = 1000 -- от этой суммы всплывашка крупнее
 
 local player = Players.LocalPlayer
@@ -47,18 +47,17 @@ local function showPopup(delta)
 		Size = UDim2.new(0, 300, 0, 50),
 		Position = UDim2.new(0.5, xOffset, 0.7, yOffset),
 		TextColor3 = delta >= 0 and GAIN_COLOR or LOSS_COLOR,
-		TextSize = big and 40 or 30,
+		TextSize = big and 30 or 24,
 		TextWrapped = false,
-		Rotation = math.random(-8, 8),
-		strokeThickness = 3,
+				strokeThickness = 2,
 	})
 	local stroke = popup:FindFirstChildOfClass("UIStroke")
-	local scale = UILib.make("UIScale", { Scale = 0.3 }, popup)
+	local scale = UILib.make("UIScale", { Scale = 0.6 }, popup)
 
 	sound:Play()
 
-	-- 1) выпрыгивает, 2) взлетает и растворяется
-	UILib.tween(scale, 0.2, { Scale = 1 }, Enum.EasingStyle.Back)
+	-- 1) появляется, 2) взлетает и растворяется
+	UILib.tween(scale, 0.15, { Scale = 1 })
 	UILib.tween(popup, FLY_TIME, {
 		Position = UDim2.new(0.5, xOffset, 0.7 - 0.08, yOffset),
 	})

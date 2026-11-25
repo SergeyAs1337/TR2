@@ -1,6 +1,6 @@
--- StarterPlayer/StarterPlayerScripts/UpgradeShop  (LocalScript)  v1 — окно апгрейдов кодом
+-- StarterPlayer/StarterPlayerScripts/UpgradeShop  (LocalScript)  v2 — стиль админ-панели
 -- Заменяет StarterGui/UpgradeGUI (его нужно удалить вместе с его LocalScript).
--- Четыре карточки: иконка, уровень, полоска из 10 делений, «было → станет», цена.
+-- Четыре карточки: иконка, уровень, полоска уровня, «было → станет», кнопка с ценой.
 -- Открывается кнопкой «⬆ Апгрейды» в HUD (CoinsHud) или из любого LocalScript:
 --   require(ReplicatedStorage.UILib).open("Upgrades")
 --
@@ -33,7 +33,7 @@ local UPGRADES = {
 		name = "Health",
 		title = "Здоровье",
 		icon = "❤️",
-		color = "red",
+		color = "bad",
 		max = 10,
 		effect = function(level)
 			return UILib.formatNumber(100 * level) .. " ХП"
@@ -43,7 +43,7 @@ local UPGRADES = {
 		name = "Speed",
 		title = "Скорость",
 		icon = "👟",
-		color = "blue",
+		color = "accent",
 		max = 10,
 		effect = function(level)
 			return trim(16 + (level - 1) * 16 / 9)
@@ -53,7 +53,7 @@ local UPGRADES = {
 		name = "Regen",
 		title = "Регенерация",
 		icon = "💚",
-		color = "green",
+		color = "good",
 		max = 10,
 		effect = function(level)
 			local percent = 5 + (level - 1) * 5 / 9
@@ -65,7 +65,7 @@ local UPGRADES = {
 		name = "CoinMultiplier",
 		title = "Монеты за смерть",
 		icon = "🪙",
-		color = "yellow",
+		color = "warn",
 		max = 10,
 		effect = function(level)
 			return "x" .. level
@@ -77,30 +77,30 @@ local UPGRADES = {
 local win = UILib.window({
 	name = "Upgrades",
 	guiName = "UpgradeGUI",
-	title = "⬆ АПГРЕЙДЫ",
-	accent = "orange",
-	size = Vector2.new(600, 470),
+	title = "⬆  Апгрейды",
+	size = Vector2.new(560, 440),
 	player = player,
 })
 
 local balanceLabel = UILib.text(win.body, "Баланс: 🪙 …", {
 	Name = "Balance",
 	Position = UDim2.new(0, 0, 0, 0),
-	Size = UDim2.new(1, 0, 0, 26),
-	TextColor3 = THEME.ink,
-	TextSize = 20,
-	strokeThickness = 0,
+	Size = UDim2.new(1, 0, 0, 22),
+	TextColor3 = THEME.muted,
+	TextSize = 15,
+	Font = THEME.fontBody,
+	TextXAlignment = Enum.TextXAlignment.Left,
 })
 
 local grid = UILib.make("Frame", {
 	Name = "Cards",
-	Position = UDim2.new(0, 0, 0, 32),
-	Size = UDim2.new(1, 0, 1, -32),
+	Position = UDim2.new(0, 0, 0, 30),
+	Size = UDim2.new(1, 0, 1, -30),
 	BackgroundTransparency = 1,
 }, win.body)
 UILib.make("UIGridLayout", {
-	CellSize = UDim2.new(0.5, -6, 0.5, -6),
-	CellPadding = UDim2.new(0, 12, 0, 12),
+	CellSize = UDim2.new(0.5, -5, 0.5, -5),
+	CellPadding = UDim2.new(0, 10, 0, 10),
 	SortOrder = Enum.SortOrder.LayoutOrder,
 }, grid)
 
@@ -109,89 +109,66 @@ local cards = {} -- cards[name] = { ... }
 local pendingPurchase = {}
 
 local function makeCard(data, order)
-	local colors = UILib.palette(data.color)
-	local card = UILib.make("Frame", {
+	local card = UILib.panel(grid, {
 		Name = data.name,
-		BackgroundColor3 = THEME.creamDark,
-		BorderSizePixel = 0,
 		LayoutOrder = order,
-	}, grid)
-	UILib.corner(card, THEME.radius)
-	UILib.stroke(card, THEME.stroke)
+	})
 
-	-- Иконка в кружке
-	local badge = UILib.make("Frame", {
+	UILib.text(card, data.icon, {
 		Name = "Icon",
 		Position = UDim2.new(0, 10, 0, 10),
-		Size = UDim2.new(0, 48, 0, 48),
-		BackgroundColor3 = THEME.white,
-		BorderSizePixel = 0,
-	}, card)
-	UILib.corner(badge, 24)
-	UILib.stroke(badge, THEME.stroke)
-	UILib.gradient(badge, colors.top, colors.face)
-	UILib.text(badge, data.icon, { Size = UDim2.new(1, 0, 1, 0), TextSize = 26, strokeThickness = 0 })
-
+		Size = UDim2.new(0, 28, 0, 26),
+		TextSize = 20,
+	})
 	UILib.text(card, data.title, {
 		Name = "Title",
-		Position = UDim2.new(0, 66, 0, 8),
-		Size = UDim2.new(1, -74, 0, 26),
-		TextColor3 = THEME.ink,
-		TextSize = 20,
+		Position = UDim2.new(0, 42, 0, 10),
+		Size = UDim2.new(1, -110, 0, 26),
+		TextSize = 17,
 		TextXAlignment = Enum.TextXAlignment.Left,
 		TextScaled = true,
-		strokeThickness = 0,
 	})
 	local levelText = UILib.text(card, "", {
 		Name = "LevelText",
-		Position = UDim2.new(0, 66, 0, 34),
-		Size = UDim2.new(1, -74, 0, 20),
+		AnchorPoint = Vector2.new(1, 0),
+		Position = UDim2.new(1, -12, 0, 10),
+		Size = UDim2.new(0, 64, 0, 26),
 		TextColor3 = THEME.muted,
-		TextSize = 16,
+		TextSize = 14,
 		Font = THEME.fontBody,
-		TextXAlignment = Enum.TextXAlignment.Left,
-		strokeThickness = 0,
+		TextXAlignment = Enum.TextXAlignment.Right,
 	})
 
-	-- Полоска из делений
-	local bar = UILib.make("Frame", {
+	-- Полоска уровня
+	local bar = UILib.panel(card, {
 		Name = "Bar",
-		Position = UDim2.new(0, 10, 0, 66),
-		Size = UDim2.new(1, -20, 0, 14),
-		BackgroundTransparency = 1,
-	}, card)
-	local segments = {}
-	for i = 1, data.max do
-		local segment = UILib.make("Frame", {
-			Name = "Segment" .. i,
-			Position = UDim2.new((i - 1) / data.max, 1, 0, 0),
-			Size = UDim2.new(1 / data.max, -3, 1, 0),
-			BackgroundColor3 = THEME.empty,
-			BorderSizePixel = 0,
-		}, bar)
-		UILib.corner(segment, 4)
-		UILib.stroke(segment, 2)
-		segments[i] = segment
-	end
+		Position = UDim2.new(0, 12, 0, 46),
+		Size = UDim2.new(1, -24, 0, 6),
+		BackgroundColor3 = THEME.row,
+	})
+	local fill = UILib.panel(bar, {
+		Name = "Fill",
+		Size = UDim2.new(0.1, 0, 1, 0),
+		BackgroundColor3 = UILib.palette(data.color).face,
+	})
 
 	local effectText = UILib.text(card, "", {
 		Name = "Effect",
-		Position = UDim2.new(0, 10, 0, 86),
-		Size = UDim2.new(1, -20, 0, 22),
-		TextColor3 = THEME.ink,
-		TextSize = 17,
+		Position = UDim2.new(0, 12, 0, 60),
+		Size = UDim2.new(1, -24, 0, 20),
+		TextColor3 = THEME.muted,
+		TextSize = 14,
 		Font = THEME.fontBody,
-		strokeThickness = 0,
+		TextXAlignment = Enum.TextXAlignment.Left,
 	})
 
-	local buy = UILib.toonButton(card, {
+	local buy = UILib.actionButton(card, {
 		name = "BuyButton",
 		text = "",
-		color = "green",
+		color = "good",
 		anchor = Vector2.new(0.5, 1),
-		position = UDim2.new(0.5, 0, 1, -8),
-		size = UDim2.new(1, -20, 0, 46),
-		textSize = 20,
+		position = UDim2.new(0.5, 0, 1, -12),
+		size = UDim2.new(1, -24, 0, 38),
 		onClick = function()
 			pendingPurchase[data.name] = true
 			upgradeEvent:FireServer(data.name)
@@ -203,7 +180,7 @@ local function makeCard(data, order)
 		frame = card,
 		levelText = levelText,
 		effectText = effectText,
-		segments = segments,
+		fill = fill,
 		buy = buy,
 		level = nil,
 	}
@@ -246,32 +223,25 @@ local function refresh()
 		end
 		card.level = level
 
-		card.levelText.Text = string.format("Уровень %d / %d", level, data.max)
-		local fill = UILib.palette(data.color).face
-		for i, segment in card.segments do
-			segment.BackgroundColor3 = i <= level and fill or THEME.empty
-		end
+		card.levelText.Text = string.format("%d / %d", level, data.max)
+		UILib.tween(card.fill, 0.25, { Size = UDim2.new(level / data.max, 0, 1, 0) })
 
 		if level >= data.max then
-			card.effectText.Text = data.effect(level) .. "  (максимум)"
-			card.buy.setText("⭐ МАКС")
-			card.buy.setEnabled(true)
-			card.buy.setColor("yellow")
+			card.effectText.Text = data.effect(level) .. " · максимум"
+			card.buy.setText("Максимум")
+			card.buy.setEnabled(false)
 		else
 			local price = LEVEL_PRICES[level] or 0
 			card.effectText.Text = data.effect(level) .. "  →  " .. data.effect(level + 1)
-			card.buy.setText("🪙 " .. UILib.formatNumber(price))
-			card.buy.setColor("green")
-			-- Не хватает монет: кнопка серая, но нажимается (покажет «Недостаточно монет!» от сервера)
+			card.buy.setText("Купить · 🪙 " .. UILib.formatNumber(price))
 			card.buy.setEnabled(true)
-			if coins and coins < price then
-				card.buy.setColor("grey")
-			end
+			-- Не хватает монет: кнопка серая, но нажимается (сервер ответит «Недостаточно монет!»)
+			card.buy.setColor((coins and coins < price) and "neutral" or "good")
 		end
 
 		if leveledUp then
 			UILib.shake(card.frame)
-			UILib.toast(data.icon .. " " .. data.title .. ": уровень " .. level .. "!", "green", 1.5)
+			UILib.toast(data.icon .. " " .. data.title .. ": уровень " .. level, "good", 1.5)
 		end
 	end
 end
@@ -287,7 +257,7 @@ upgradeEvent.OnClientEvent:Connect(function(upgradeName, success, message)
 		UILib.shake(card.frame)
 	end
 	if typeof(message) == "string" then
-		UILib.toast(message, "red")
+		UILib.toast(message, "bad")
 	end
 end)
 

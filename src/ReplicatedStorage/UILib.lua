@@ -1,15 +1,18 @@
--- ReplicatedStorage/UILib  (ModuleScript, только для клиента)  v2 — мультяшный стиль
+-- ReplicatedStorage/UILib  (ModuleScript, только для клиента)  v3 — стиль админ-панели
 -- Общие кирпичики для интерфейсов, которые строятся кодом. Подключение:
 --   local UILib = require(game:GetService("ReplicatedStorage"):WaitForChild("UILib"))
 --
+-- Весь внешний вид задаётся здесь, в THEME и в функциях ниже. Окна (автомат, HUD, апгрейды,
+-- баннер) пользуются только THEME и компонентами, поэтому новый стиль = правка этого файла.
+--
 -- Что внутри:
---   THEME             — цвета, шрифты, толщина обводки. Поменяй здесь, и поменяется вся игра.
---   toonButton(...)   — объёмная кнопка с тенью: нажимается вниз, увеличивается при наведении.
---   window(...)       — окно с шапкой, крестиком, затемнением и pop-анимацией. Само подстраивается
---                       под размер экрана (телефон / ПК). Открытые окна закрывают друг друга.
+--   THEME             — цвета, шрифты, скругления, размеры текста.
+--   actionButton(...) — кнопка: цвет из палитры, подсветка при наведении, затемнение при нажатии.
+--   window(...)       — окно с заголовком, крестиком, затемнением и анимацией появления. Само
+--                       подстраивается под экран (телефон / ПК). Открытые окна закрывают друг друга.
 --   open/close/toggle — открыть окно по имени из любого LocalScript (например, кнопкой в HUD).
 --   toast(...)        — короткое уведомление сверху экрана.
---   text, stroke, gradient, tween, bump, shake, fitScale, formatNumber, formatShort, formatTime.
+--   panel, text, stroke, tween, bump, shake, fitScale, formatNumber, formatShort, formatTime.
 -- Старые функции v1 (make, corner, padding, list, label, button, input, scroll, confirmButton,
 -- COLORS) оставлены без изменений, ими пользуется админ-панель.
 
@@ -20,39 +23,37 @@ local Workspace = game:GetService("Workspace")
 local UILib = {}
 
 -- ===================================================================================
--- Тема
+-- Тема (цвета как у админ-панели)
 -- ===================================================================================
 local function rgb(r, g, b)
 	return Color3.fromRGB(r, g, b)
 end
 
--- Каждый цвет кнопки задан тремя оттенками: top (блик сверху), face (основной), shade (тень снизу).
--- Оттенки заданы явно, без вычислений: так проще подбирать цвета под себя.
 local THEME = {
-	font = Enum.Font.GothamBlack, -- заголовки, числа, кнопки (кириллица поддерживается)
-	fontBody = Enum.Font.GothamBold, -- обычный текст
+	font = Enum.Font.GothamBold, -- заголовки, числа, кнопки
+	fontBody = Enum.Font.Gotham, -- обычный текст
 
-	ink = rgb(30, 22, 44), -- обводки и тёмный текст
-	white = rgb(255, 255, 255),
-	cream = rgb(255, 248, 232), -- фон окон
-	creamDark = rgb(244, 228, 196), -- карточки внутри окон
-	muted = rgb(128, 110, 132), -- второстепенный текст на светлом фоне
-	empty = rgb(214, 200, 180), -- пустые деления полосок
-	dim = rgb(10, 6, 20), -- затемнение под окном
+	background = rgb(24, 26, 33), -- фон окон
+	panel = rgb(33, 36, 46), -- карточки и блоки внутри окна, плашки HUD
+	row = rgb(46, 50, 64), -- поля ввода, дорожки полосок, барабаны
+	border = rgb(52, 57, 72), -- тонкая рамка окон
+	text = rgb(235, 238, 245),
+	muted = rgb(160, 166, 185),
+	dim = rgb(0, 0, 0), -- затемнение под окном
+	coin = rgb(214, 160, 52), -- цвет монет
 
-	stroke = 3, -- толщина обводки, пиксели
-	radius = 14, -- скругление углов
-	depth = 5, -- высота «тени» под кнопками
+	radius = 8,
+	textSize = 16,
+	titleSize = 20,
+	buttonHeight = 40,
 
+	-- Цвета кнопок и акцентов: face (обычный), hover (под курсором), press (нажата)
 	palette = {
-		yellow = { top = rgb(255, 236, 110), face = rgb(255, 200, 40), shade = rgb(204, 140, 10) },
-		orange = { top = rgb(255, 180, 90), face = rgb(255, 128, 30), shade = rgb(196, 80, 10) },
-		green = { top = rgb(140, 240, 110), face = rgb(70, 200, 80), shade = rgb(30, 140, 50) },
-		red = { top = rgb(255, 130, 120), face = rgb(240, 66, 66), shade = rgb(170, 30, 40) },
-		blue = { top = rgb(120, 200, 255), face = rgb(50, 145, 255), shade = rgb(20, 90, 200) },
-		purple = { top = rgb(200, 150, 255), face = rgb(150, 80, 240), shade = rgb(96, 40, 180) },
-		pink = { top = rgb(255, 160, 210), face = rgb(255, 90, 170), shade = rgb(190, 40, 120) },
-		grey = { top = rgb(205, 200, 210), face = rgb(160, 152, 168), shade = rgb(110, 102, 120) },
+		accent = { face = rgb(70, 120, 235), hover = rgb(92, 140, 245), press = rgb(54, 98, 200) },
+		good = { face = rgb(52, 150, 96), hover = rgb(64, 172, 112), press = rgb(42, 124, 80) },
+		bad = { face = rgb(180, 66, 66), hover = rgb(200, 82, 82), press = rgb(150, 52, 52) },
+		warn = { face = rgb(196, 132, 40), hover = rgb(214, 150, 56), press = rgb(166, 110, 30) },
+		neutral = { face = rgb(46, 50, 64), hover = rgb(58, 63, 80), press = rgb(38, 41, 53) },
 	},
 
 	-- Адаптация под экран: окна рассчитаны на экран refSize и масштабируются в пределах min..max
@@ -252,28 +253,21 @@ function UILib.formatTime(seconds)
 end
 
 -- ===================================================================================
--- Мультяшные кирпичики
+-- Оформление
 -- ===================================================================================
 
+
 function UILib.palette(key)
-	return THEME.palette[key] or THEME.palette.blue
+	return THEME.palette[key] or THEME.palette.accent
 end
 
--- Обводка. mode = "border" (по краю рамки) или "text" (контур букв)
+-- Тонкая рамка. mode = "border" (по краю рамки) или "text" (контур букв)
 function UILib.stroke(instance, thickness, color, mode)
 	return make("UIStroke", {
-		Thickness = thickness or THEME.stroke,
-		Color = color or THEME.ink,
+		Thickness = thickness or 1,
+		Color = color or THEME.border,
 		ApplyStrokeMode = mode == "text" and Enum.ApplyStrokeMode.Contextual or Enum.ApplyStrokeMode.Border,
 		LineJoinMode = Enum.LineJoinMode.Round,
-	}, instance)
-end
-
--- Вертикальный градиент: светлее сверху, темнее снизу
-function UILib.gradient(instance, top, bottom)
-	return make("UIGradient", {
-		Color = ColorSequence.new(top, bottom),
-		Rotation = 90,
 	}, instance)
 end
 
@@ -287,19 +281,34 @@ function UILib.tween(instance, time, goals, style, direction)
 	return tween
 end
 
--- Надпись в мультяшном стиле: жирный шрифт, белые буквы с тёмным контуром.
--- props перекрывают значения по умолчанию (Size, Position, TextColor3, TextSize, ...).
--- props.strokeThickness = 0 убирает контур.
+-- Блок-подложка: скруглённый прямоугольник цвета color (по умолчанию THEME.panel)
+function UILib.panel(parent, props)
+	props = props or {}
+	local defaults = {
+		BackgroundColor3 = THEME.panel,
+		BorderSizePixel = 0,
+		Size = UDim2.new(1, 0, 0, 40),
+	}
+	for key, value in props do
+		defaults[key] = value
+	end
+	local frame = make("Frame", defaults, parent)
+	UILib.corner(frame, THEME.radius)
+	return frame
+end
+
+-- Надпись. props перекрывают значения по умолчанию (Size, Position, TextColor3, TextSize, ...).
+-- props.strokeThickness > 0 добавляет тёмный контур (для текста поверх 3D-мира).
 function UILib.text(parent, text, props)
 	props = props or {}
 	local thickness = props.strokeThickness
 	local defaults = {
-		Size = UDim2.new(1, 0, 0, 24),
+		Size = UDim2.new(1, 0, 0, 22),
 		BackgroundTransparency = 1,
 		BorderSizePixel = 0,
 		Text = text,
-		TextColor3 = THEME.white,
-		TextSize = 20,
+		TextColor3 = THEME.text,
+		TextSize = THEME.textSize,
 		Font = THEME.font,
 		TextXAlignment = Enum.TextXAlignment.Center,
 		TextYAlignment = Enum.TextYAlignment.Center,
@@ -311,19 +320,20 @@ function UILib.text(parent, text, props)
 		end
 	end
 	local label = make("TextLabel", defaults, parent)
-	if thickness ~= 0 then
-		UILib.stroke(label, thickness or 2, THEME.ink, "text")
+	if thickness and thickness > 0 then
+		local stroke = UILib.stroke(label, thickness, Color3.fromRGB(0, 0, 0), "text")
+		stroke.Transparency = 0.35
 	end
 	return label
 end
 
--- Быстрое «подпрыгивание» через UIScale (например, при изменении числа)
+-- Короткое «подпрыгивание» через UIScale (например, при изменении числа)
 function UILib.bump(uiScale, amount)
 	if not uiScale then
 		return
 	end
-	uiScale.Scale = amount or 1.15
-	UILib.tween(uiScale, 0.25, { Scale = 1 }, Enum.EasingStyle.Back)
+	uiScale.Scale = amount or 1.06
+	UILib.tween(uiScale, 0.2, { Scale = 1 })
 end
 
 -- Покачивание: «нельзя», «ошибка»
@@ -332,7 +342,7 @@ function UILib.shake(guiObject)
 		return
 	end
 	task.spawn(function()
-		for _, angle in { -6, 6, -4, 4, -2, 0 } do
+		for _, angle in { -3, 3, -2, 2, 0 } do
 			guiObject.Rotation = angle
 			task.wait(0.04)
 		end
@@ -370,71 +380,57 @@ function UILib.screenGui(name, displayOrder, player)
 end
 
 -- ===================================================================================
--- Объёмная кнопка
+-- Кнопка
 -- ===================================================================================
--- opts: text, color (ключ палитры), size (UDim2), position, anchor, textSize, onClick,
---       name, layoutOrder, zIndex
+-- opts: text, color (ключ палитры: accent, good, bad, warn, neutral), size (UDim2), position,
+--       anchor, textSize, onClick, name, layoutOrder, zIndex
 -- Возвращает объект: root (рамка), face (TextButton, на неё вешается Activated), label,
---                    setText(text), setColor(key), setEnabled(bool), isEnabled()
-function UILib.toonButton(parent, opts)
+--   setText(text), setColor(key), getColor(), setEnabled(bool), isEnabled()
+-- Выключенная кнопка серая, не вызывает onClick и покачивается при нажатии.
+function UILib.actionButton(parent, opts)
 	opts = opts or {}
-	local depth = THEME.depth
-	local colors = UILib.palette(opts.color or "blue")
 
 	local root = make("Frame", {
-		Name = opts.name or "ToonButton",
-		Size = opts.size or UDim2.new(0, 160, 0, 50),
+		Name = opts.name or "Button",
+		Size = opts.size or UDim2.new(0, 160, 0, THEME.buttonHeight),
 		Position = opts.position or UDim2.new(0, 0, 0, 0),
 		AnchorPoint = opts.anchor or Vector2.new(0, 0),
 		BackgroundTransparency = 1,
 		LayoutOrder = opts.layoutOrder or 0,
 		ZIndex = opts.zIndex or 1,
 	}, parent)
-	local hoverScale = make("UIScale", { Name = "HoverScale", Scale = 1 }, root)
-
-	local shadow = make("Frame", {
-		Name = "Shadow",
-		Size = UDim2.new(1, 0, 1, -depth),
-		Position = UDim2.new(0, 0, 0, depth),
-		BackgroundColor3 = colors.shade,
-		BorderSizePixel = 0,
-		ZIndex = opts.zIndex or 1,
-	}, root)
-	UILib.corner(shadow, THEME.radius - 2)
-	UILib.stroke(shadow, THEME.stroke)
 
 	local face = make("TextButton", {
 		Name = "Face",
-		Size = UDim2.new(1, 0, 1, -depth),
-		Position = UDim2.new(0, 0, 0, 0),
-		BackgroundColor3 = THEME.white,
+		Size = UDim2.new(1, 0, 1, 0),
+		BackgroundColor3 = THEME.palette.accent.face,
 		BorderSizePixel = 0,
 		Text = "",
 		AutoButtonColor = false,
 		ZIndex = opts.zIndex or 1,
 	}, root)
-	UILib.corner(face, THEME.radius - 2)
-	UILib.stroke(face, THEME.stroke)
-	local gradient = UILib.gradient(face, colors.top, colors.face)
+	UILib.corner(face, THEME.radius)
 
 	local label = UILib.text(face, opts.text or "", {
 		Name = "Label",
 		Size = UDim2.new(1, -12, 1, 0),
 		Position = UDim2.new(0, 6, 0, 0),
-		TextSize = opts.textSize or 22,
+		TextSize = opts.textSize or THEME.textSize,
 		TextWrapped = false,
-		TextScaled = false,
 		ZIndex = (opts.zIndex or 1) + 1,
 	})
 
-	local button = { root = root, face = face, label = label, shadow = shadow }
+	local button = { root = root, face = face, label = label }
 	local enabled = true
-	local colorKey = opts.color or "blue"
+	local colorKey = opts.color or "accent"
+	local hovered = false
 
-	local function paint(key)
-		local c = UILib.palette(key)
-		gradient.Color = ColorSequence.new(c.top, c.face)
-		shadow.BackgroundColor3 = c.shade
+	local function painted()
+		return enabled and colorKey or "neutral"
+	end
+	local function paint(state)
+		local colors = UILib.palette(painted())
+		face.BackgroundColor3 = colors[state or (hovered and "hover" or "face")]
 	end
 
 	function button.setText(text)
@@ -443,40 +439,36 @@ function UILib.toonButton(parent, opts)
 
 	function button.setColor(key)
 		colorKey = key
-		if enabled then
-			paint(key)
-		end
+		paint()
+	end
+
+	function button.getColor()
+		return painted()
 	end
 
 	function button.setEnabled(value)
 		enabled = value and true or false
-		paint(enabled and colorKey or "grey")
-		label.TextTransparency = enabled and 0 or 0.25
+		label.TextColor3 = enabled and THEME.text or THEME.muted
+		paint()
 	end
 
 	function button.isEnabled()
 		return enabled
 	end
 
-	-- Нажатие: «лицо» опускается на тень
-	local function press()
-		if enabled then
-			UILib.tween(face, 0.06, { Position = UDim2.new(0, 0, 0, depth - 1) })
-		end
-	end
-	local function release()
-		UILib.tween(face, 0.12, { Position = UDim2.new(0, 0, 0, 0) }, Enum.EasingStyle.Back)
-	end
-	face.MouseButton1Down:Connect(press)
-	face.MouseButton1Up:Connect(release)
 	face.MouseEnter:Connect(function()
-		if enabled then
-			UILib.tween(hoverScale, 0.12, { Scale = 1.05 })
-		end
+		hovered = true
+		paint()
 	end)
 	face.MouseLeave:Connect(function()
-		release()
-		UILib.tween(hoverScale, 0.12, { Scale = 1 })
+		hovered = false
+		paint()
+	end)
+	face.MouseButton1Down:Connect(function()
+		paint("press")
+	end)
+	face.MouseButton1Up:Connect(function()
+		paint()
 	end)
 
 	face.Activated:Connect(function()
@@ -489,21 +481,22 @@ function UILib.toonButton(parent, opts)
 		end
 	end)
 
+	paint()
 	return button
 end
+UILib.toonButton = UILib.actionButton -- старое имя из v2
 
 -- ===================================================================================
 -- Окна
 -- ===================================================================================
 local screens = {} -- screens[name] = окно; открыто одновременно не больше одного
 
--- opts: name, title, accent (ключ палитры), size (Vector2, пиксели при масштабе 1),
---       displayOrder, player, onOpen(), onClose()
+-- opts: name, guiName, title, size (Vector2, пиксели при масштабе 1), displayOrder, player,
+--       onOpen(), onClose()
 -- Возвращает окно: gui, holder, panel, header, title, body, closeButton,
 --                  open(), close(), toggle(), isOpen()
 function UILib.window(opts)
-	local size = opts.size or Vector2.new(460, 380)
-	local accent = UILib.palette(opts.accent or "blue")
+	local size = opts.size or Vector2.new(440, 380)
 	local gui = UILib.screenGui(opts.guiName or opts.name, opts.displayOrder or 10, opts.player)
 
 	-- Затемнение: клик мимо окна закрывает его
@@ -532,42 +525,39 @@ function UILib.window(opts)
 	local panel = make("Frame", {
 		Name = "Panel",
 		Size = UDim2.new(1, 0, 1, 0),
-		BackgroundColor3 = THEME.cream,
+		BackgroundColor3 = THEME.background,
 		BorderSizePixel = 0,
 		Active = true, -- клик по окну не должен «проваливаться» в затемнение и закрывать его
 	}, holder)
-	UILib.corner(panel, THEME.radius + 4)
-	UILib.stroke(panel, THEME.stroke + 1)
+	UILib.corner(panel, THEME.radius + 2)
+	UILib.stroke(panel, 1, THEME.border)
 	local popScale = make("UIScale", { Name = "PopScale", Scale = 1 }, panel)
 
-	-- Шапка выступает над окном, как ленточка
 	local header = make("Frame", {
 		Name = "Header",
-		AnchorPoint = Vector2.new(0.5, 0.5),
-		Position = UDim2.new(0.5, 0, 0, 4),
-		Size = UDim2.new(0.72, 0, 0, 54),
-		BackgroundColor3 = THEME.white,
-		BorderSizePixel = 0,
-		ZIndex = 3,
+		Size = UDim2.new(1, 0, 0, 52),
+		BackgroundTransparency = 1,
 	}, panel)
-	UILib.corner(header, THEME.radius)
-	UILib.stroke(header, THEME.stroke + 1)
-	UILib.gradient(header, accent.top, accent.face)
-
 	local title = UILib.text(header, opts.title or "", {
 		Name = "Title",
-		Size = UDim2.new(1, -20, 1, 0),
-		Position = UDim2.new(0, 10, 0, 0),
-		TextSize = 28,
+		Position = UDim2.new(0, 16, 0, 0),
+		Size = UDim2.new(1, -70, 1, 0),
+		TextSize = THEME.titleSize,
+		TextXAlignment = Enum.TextXAlignment.Left,
 		TextWrapped = false,
-		ZIndex = 4,
-		strokeThickness = 3,
 	})
+	make("Frame", { -- разделитель под заголовком
+		Name = "Divider",
+		Position = UDim2.new(0, 0, 1, -1),
+		Size = UDim2.new(1, 0, 0, 1),
+		BackgroundColor3 = THEME.border,
+		BorderSizePixel = 0,
+	}, header)
 
 	local body = make("Frame", {
 		Name = "Body",
-		Position = UDim2.new(0, 18, 0, 44),
-		Size = UDim2.new(1, -36, 1, -62),
+		Position = UDim2.new(0, 16, 0, 64),
+		Size = UDim2.new(1, -32, 1, -80),
 		BackgroundTransparency = 1,
 	}, panel)
 
@@ -575,19 +565,21 @@ function UILib.window(opts)
 	local opened = false
 	local generation = 0
 
-	local closeButton = UILib.toonButton(panel, {
+	local closeButton = UILib.actionButton(header, {
 		name = "CloseButton",
 		text = "✕",
-		color = "red",
-		size = UDim2.new(0, 50, 0, 50),
-		anchor = Vector2.new(0.5, 0.5),
-		position = UDim2.new(1, -6, 0, 6),
-		textSize = 26,
-		zIndex = 5,
+		color = "neutral",
+		size = UDim2.new(0, 34, 0, 34),
+		anchor = Vector2.new(1, 0.5),
+		position = UDim2.new(1, -10, 0.5, 0),
 		onClick = function()
 			win.close()
 		end,
 	})
+	-- крестик краснеет под курсором
+	closeButton.face.MouseEnter:Connect(function()
+		closeButton.face.BackgroundColor3 = THEME.palette.bad.face
+	end)
 	win.closeButton = closeButton
 
 	function win.isOpen()
@@ -608,9 +600,9 @@ function UILib.window(opts)
 		generation += 1
 		holder.Visible = true
 		dim.Visible = true
-		popScale.Scale = 0.6
-		UILib.tween(popScale, 0.28, { Scale = 1 }, Enum.EasingStyle.Back)
-		UILib.tween(dim, 0.2, { BackgroundTransparency = 0.55 })
+		popScale.Scale = 0.94
+		UILib.tween(popScale, 0.18, { Scale = 1 })
+		UILib.tween(dim, 0.18, { BackgroundTransparency = 0.5 })
 		if opts.onOpen then
 			opts.onOpen()
 		end
@@ -623,9 +615,9 @@ function UILib.window(opts)
 		opened = false
 		generation += 1
 		local myGeneration = generation
-		UILib.tween(popScale, 0.14, { Scale = 0.6 }, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
-		UILib.tween(dim, 0.14, { BackgroundTransparency = 1 })
-		task.delay(0.15, function()
+		UILib.tween(popScale, 0.12, { Scale = 0.94 }, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
+		UILib.tween(dim, 0.12, { BackgroundTransparency = 1 })
+		task.delay(0.13, function()
 			if myGeneration == generation then
 				holder.Visible = false
 				dim.Visible = false
@@ -697,17 +689,17 @@ local function getToastHolder()
 	toastHolder = make("Frame", {
 		Name = "Holder",
 		AnchorPoint = Vector2.new(0.5, 0),
-		Position = UDim2.new(0.5, 0, 0, 120),
-		Size = UDim2.new(0, 420, 0, 300),
+		Position = UDim2.new(0.5, 0, 0, 110),
+		Size = UDim2.new(0, 380, 0, 260),
 		BackgroundTransparency = 1,
 	}, gui)
 	UILib.fitScale(toastHolder)
-	local layout = UILib.list(toastHolder, 8)
+	local layout = UILib.list(toastHolder, 6)
 	layout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 	return toastHolder
 end
 
--- color: ключ палитры (red — ошибка, green — успех, ...)
+-- color: ключ палитры полоски слева (bad — ошибка, good — успех, ...)
 function UILib.toast(text, color, duration)
 	local holder = getToastHolder()
 	local existing = {}
@@ -720,33 +712,39 @@ function UILib.toast(text, color, duration)
 		existing[1]:Destroy()
 	end
 
-	local colors = UILib.palette(color or "blue")
-	local toast = make("Frame", {
+	local toast = UILib.panel(holder, {
 		Name = "Toast",
-		Size = UDim2.new(0, 380, 0, 46),
-		BackgroundColor3 = THEME.white,
+		Size = UDim2.new(0, 360, 0, 42),
+		BackgroundColor3 = THEME.background,
+	})
+	local toastStroke = UILib.stroke(toast, 1, THEME.border)
+	local strip = make("Frame", {
+		Name = "Strip",
+		Size = UDim2.new(0, 4, 1, -12),
+		Position = UDim2.new(0, 8, 0, 6),
+		BackgroundColor3 = UILib.palette(color or "accent").face,
 		BorderSizePixel = 0,
-	}, holder)
-	UILib.corner(toast, 23)
-	local toastStroke = UILib.stroke(toast, THEME.stroke)
-	UILib.gradient(toast, colors.top, colors.face)
-	local scale = make("UIScale", { Scale = 0.5 }, toast)
+	}, toast)
+	UILib.corner(strip, 2)
 	local label = UILib.text(toast, text, {
 		Name = "Label",
-		Size = UDim2.new(1, -20, 1, 0),
-		Position = UDim2.new(0, 10, 0, 0),
-		TextSize = 20,
+		Size = UDim2.new(1, -32, 1, 0),
+		Position = UDim2.new(0, 20, 0, 0),
+		TextXAlignment = Enum.TextXAlignment.Left,
+		Font = THEME.fontBody,
 	})
 
-	UILib.tween(scale, 0.25, { Scale = 1 }, Enum.EasingStyle.Back)
+	toast.BackgroundTransparency = 1
+	UILib.tween(toast, 0.15, { BackgroundTransparency = 0 })
 	task.delay(duration or 2, function()
 		if not toast.Parent then
 			return
 		end
-		UILib.tween(toast, 0.3, { BackgroundTransparency = 1 })
-		UILib.tween(label, 0.3, { TextTransparency = 1 })
-		UILib.tween(toastStroke, 0.3, { Transparency = 1 })
-		task.delay(0.31, function()
+		UILib.tween(toast, 0.25, { BackgroundTransparency = 1 })
+		UILib.tween(label, 0.25, { TextTransparency = 1 })
+		UILib.tween(strip, 0.25, { BackgroundTransparency = 1 })
+		UILib.tween(toastStroke, 0.25, { Transparency = 1 })
+		task.delay(0.26, function()
 			toast:Destroy()
 		end)
 	end)
